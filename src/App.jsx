@@ -1,3 +1,4 @@
+import React from 'react';
 import FlowChart from './components/FlowChart'
 
 function App() {
@@ -6,9 +7,6 @@ function App() {
     <>
       <h1>welcome</h1>
       <FlowChart />
-      <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-        Learn React
-      </a>
     </>
   )
 }

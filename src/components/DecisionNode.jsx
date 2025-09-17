@@ -3,7 +3,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { Handle, Position } from '@xyflow/react';
+import { Position } from '@xyflow/react';
+import HandleWithPlus from './HandleWithPlus';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 const DecisionNode = ({ id, data }) => {
@@ -19,10 +20,13 @@ const DecisionNode = ({ id, data }) => {
 
   return (
     <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
-      <Handle
+      <HandleWithPlus
+        id="in"
         type="target"
         position={Position.Top}
         style={{ background: '#fff', border: '1px solid #8e24aa' }}
+        overlayOffset={-10}
+        overlayColor={'#8e24aa'}
       />
 
       <Box
@@ -69,17 +73,21 @@ const DecisionNode = ({ id, data }) => {
         />
       </Box>
 
-      <Handle
+      <HandleWithPlus
         id="yes"
         type="source"
         position={Position.Bottom}
         style={{ left: '30%', background: '#fff', border: '1px solid #8e24aa' }}
+        overlayOffset={-10}
+        overlayColor={'#8e24aa'}
       />
-      <Handle
+      <HandleWithPlus
         id="no"
         type="source"
         position={Position.Bottom}
         style={{ left: '70%', background: '#fff', border: '1px solid #8e24aa' }}
+        overlayOffset={-10}
+        overlayColor={'#8e24aa'}
       />
     </Paper>
   );

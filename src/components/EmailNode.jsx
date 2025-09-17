@@ -31,11 +31,12 @@ const EmailNode = ({ id, data }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           px: 2,
-          py: 1
+          py: 1,
+          borderRadius: '4px 4px 0px 0px'
         }}
       >
         <Box display="flex" alignItems="center">
-          <SendIcon sx={{ transform: 'rotate(-45deg)', mr: 1 }} fontSize="small" />
+          <SendIcon sx={{ transform: 'rotate(-35deg)', mr: 1, mt: -.5 }} fontSize="small" />
           <Typography sx={{ fontWeight: 600 }}>
             Email Message
           </Typography>

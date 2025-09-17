@@ -1,49 +1,43 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Typography } from '@mui/material';
 
-const Draggable = styled(Paper, { shouldForwardProp: (p) => p !== 'selected' })(
-  ({ theme, selected }) => ({
-    padding: theme.spacing(1.25),
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    gap: theme.spacing(1),
-    cursor: 'grab',
-    background: selected ? theme.palette.primary.main : theme.palette.background.paper,
-    color: selected ? theme.palette.primary.contrastText : theme.palette.text.primary,
-    boxShadow: selected ? theme.shadows[4] : theme.shadows[0],
-  })
-);
 
 const NodeItem = ({ type, children, selected = false, icon }) => {
   return (
-    <ListItem disablePadding>
-      <ListItemButton
-        component="div"
-        onDragStart={(e) => e.dataTransfer.setData('application/reactflow', type)}
-        draggable
-        sx={{ '&:hover': { backgroundColor: '#e6c9ff', borderRadius: 1 } }}
-      >
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText
-          primary={
-            <Draggable elevation={1} selected={selected} sx={{ boxShadow: 'none', p: 0, background: 'transparent' }}>
-              <Typography variant="body2" sx={{ fontWeight: 800 }}>
-                {children}
-              </Typography>
-            </Draggable>
-          }
-        />
-      </ListItemButton>
-    </ListItem>
+    <ListItemButton
+      draggable
+      onDragStart={(e) => e.dataTransfer.setData('application/reactflow', type)}
+      sx={(theme) => ({
+        opacity: 0.7,
+        display: 'flex',
+        alignItems: 'center',
+        padding:.5,
+        gap: 1,
+        '&:hover': {
+          backgroundColor: '#e6c9ff',
+          borderRadius: 2,
+          opacity: 1,
+        },
+        // when hovering the whole list item, target child elements
+        '&:hover .node-icon': {
+          color: '#8121d6',
+        },
+        '&:hover .node-text': {
+          opacity: 1,
+        },
+      })}
+    >
+      <ListItemIcon className="node-icon" sx={{ p: 1.5, background: '#f3f4fb', minWidth: 'auto', borderRadius: 1.5, mr: 2, color: '#9CA3AF' }}>
+        {icon}
+      </ListItemIcon>
+      <Typography className="node-text" sx={{ opacity: 0.7 }} fontWeight={600} fontFamily={'Inter, sans-serif'}>
+        {children}
+      </Typography>
+    </ListItemButton>
+
   );
 };
 

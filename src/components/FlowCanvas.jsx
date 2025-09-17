@@ -11,8 +11,12 @@ import EmailNode from './EmailNode';
 import WaitNode from './WaitNode';
 import DecisionNode from './DecisionNode';
 import UpdateProfileNode from './UpdateProfileNode';
+import FreeNode from './FreeNode';
+import MessageNode from './MessageNode';
+import AddVarient from './AddVarient';
+import EntryRules from './EntryRules';
 
-const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete }) => {
+const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick }) => {
   return (
     <Box sx={{ flex: 1, height: '100vh' }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
@@ -21,14 +25,20 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onEdgeDoubleClick={onEdgeDoubleClick}
         onNodeClick={onNodeClick}
         onNodesDelete={onNodesDelete}
         nodeTypes={{
           customNode: CustomNode,
+          messageNode: EmailNode,
           emailNode: EmailNode,
           waitNode: WaitNode,
           decisionNode: DecisionNode,
+          freeNode: FreeNode,
           updateProfileNode: UpdateProfileNode,
+          messageNode:MessageNode,
+          addVarient: AddVarient,
+          entryRules:EntryRules
         }}
         fitView
         style={{ width: '100%', height: '100%' }}

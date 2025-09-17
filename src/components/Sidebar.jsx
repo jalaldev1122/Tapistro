@@ -6,15 +6,20 @@ import SendIcon from '@mui/icons-material/Send';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ScienceIcon from '@mui/icons-material/Science';
+import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
+
 import List from '@mui/material/List';
 import NodeItem from './NodeItem';
-
 
 const Sidebar = ({ onValidate }) => {
   return (
     <Box
       sx={{
-        width: 250,
+        width: 280,
         bgcolor: 'background.paper',
         borderRight: 1,
         borderColor: 'divider',
@@ -22,32 +27,56 @@ const Sidebar = ({ onValidate }) => {
         boxShadow: 1,
       }}
     >
-      <Box sx={{ mb: 3, background: '#f3f4f6', padding: 2, borderBottom: '1px solid #e5e7eb' }}>
-        <Typography gutterBottom sx={{ fontWeight: 600 }}>
+      <Box sx={{ mb: 3, background: '#f3f4f6', padding: 2, borderBottom: '1px solid #e5e7eb', fontFamily: 'Inter, sans-serif' }}>
+        <Typography gutterBottom sx={{ fontWeight: 700, color: '#191d28' }}>
           Components
         </Typography>
-        <Typography variant="caption" display="block" gutterBottom sx={{ color: 'text.secondary', mb: 1 }}>
+        <Typography sx={{ mb: 1, fontSize: '13px', color: '#abacb1', fontFamily: 'Inter, sans-serif' }}>
           Select steps to build out your journey.
         </Typography>
       </Box>
 
-      <Box sx={{ p: 1 }}>
+      <Box sx={{ p: 2 }}>
+        <Typography sx={{ fontWeight: 700, mb: 1, color: '#999b9f', ml: 1 }}>Basic Components</Typography>
         <List>
-          <NodeItem type="emailNode" style={{ backgroundColor: "black" }} icon={<SendIcon style={{ color: "purple" }} />}>
+          <NodeItem type="emailNode" icon={<MailOutlineIcon />}>
             Send Email
           </NodeItem>
-
-          <NodeItem type="waitNode" icon={<AccessTimeFilledIcon style={{ color: "purple" }} />}>
-            Wait
+          <NodeItem type="messageNode" icon={<SendIcon sx={{ rotate: '-30deg' }} />}>
+            Send Message
           </NodeItem>
 
-          <NodeItem type="decisionNode" icon={<AccountTreeRoundedIcon style={{ color: "purple" }} />}>
+          <NodeItem type="waitNode" icon={<AccessTimeFilledIcon />}>
+            Delay
+          </NodeItem>
+
+          <Typography sx={{ fontWeight: 700, mb: 1, color: '#999b9f', ml: 1, mt: 3 }}>Flow Controls</Typography>
+          <NodeItem type="decisionNode" icon={<AccountTreeRoundedIcon />}>
             Decision Split
           </NodeItem>
 
-          <NodeItem type="updateProfileNode" icon={<AccountBoxRoundedIcon style={{ color: "purple", backgroundColor: "white" }} />}>
-            Update Profile
+          <NodeItem type="updateProfileNode" icon={<AccountBoxRoundedIcon />}>
+            Audience Paths
           </NodeItem>
+
+          <NodeItem
+            type="actionPath"
+            icon={<BoltOutlinedIcon sx={{ transform: 'rotate(5deg)', fontSize: 22, fontWeight: 700 }} />}
+          >
+            Action Paths
+          </NodeItem>
+
+          <NodeItem type="experimentPath" icon={<ScienceIcon />}>
+            Experiment Paths
+          </NodeItem>
+          <NodeItem type="addVarient" icon={<AddCircleRoundedIcon />}>
+            Add Varient
+          </NodeItem>
+
+    <NodeItem type="entryRules" icon={<PlayCircleFilledWhiteRoundedIcon />}>
+         Entry Rules
+          </NodeItem>
+
         </List>
       </Box>
       <Box sx={{

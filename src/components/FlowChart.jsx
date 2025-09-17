@@ -53,10 +53,34 @@ const FlowChart = () => {
   );
 
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, id: getId() }, eds)),
-    [setEdges]
-  );
+  const onConnect = useCallback((params) => {
+    // Derive a default label from the source handle (useful for decision nodes)
+    const handleLabelMap = { yes: 'Yes', no: 'No' };
+    const defaultLabel = handleLabelMap[params.sourceHandle] || '';
+
+    const newEdge = {
+      ...params,
+      id: getId(),
+      label: defaultLabel,
+      animated: false,
+      data: { condition: defaultLabel },
+      // styling for readable label background
+      labelBgStyle: { fill: '#fff', fillOpacity: 0.9 },
+      labelBgPadding: [6, 2],
+      labelStyle: { fontWeight: 600, fontSize: 12 },
+    };
+
+    setEdges((eds) => addEdge(newEdge, eds));
+  }, [setEdges]);
+
+  const onEdgeDoubleClick = useCallback((event, edge) => {
+    // simple prompt for editing edge label — could be replaced with a drawer/modal
+    const current = edge.label || edge.data?.condition || '';
+    const next = window.prompt('Edit condition label for this branch', current);
+    if (next !== null) {
+      setEdges((eds) => eds.map((e) => (e.id === edge.id ? { ...e, label: next, data: { ...e.data, condition: next } } : e)));
+    }
+  }, [setEdges]);
 
   // Delete nodes and any edges connected to them
   const handleNodesDelete = useCallback((deleted) => {
@@ -85,6 +109,7 @@ const FlowChart = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onEdgeDoubleClick={onEdgeDoubleClick}
         onDrop={onDrop}
         onDragOver={onDragOver}
         onNodesDelete={handleNodesDelete}

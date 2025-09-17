@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 const Draggable = styled(Paper, { shouldForwardProp: (p) => p !== 'selected' })(
   ({ theme, selected }) => ({
@@ -22,19 +23,20 @@ const Draggable = styled(Paper, { shouldForwardProp: (p) => p !== 'selected' })(
   })
 );
 
-const NodeItem = ({ type, children, selected = false,icon }) => {
+const NodeItem = ({ type, children, selected = false, icon }) => {
   return (
     <ListItem disablePadding>
       <ListItemButton
         component="div"
         onDragStart={(e) => e.dataTransfer.setData('application/reactflow', type)}
         draggable
+        sx={{ '&:hover': { backgroundColor: '#e6c9ff', borderRadius: 1 } }}
       >
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText
           primary={
-            <Draggable elevation={1} selected={selected} sx={{ boxShadow: 'none', p: 0 }}>
-              <Typography variant="body2" sx={{ fontWeight: 500, px: 1 }}>
+            <Draggable elevation={1} selected={selected} sx={{ boxShadow: 'none', p: 0, background: 'transparent' }}>
+              <Typography variant="body2" sx={{ fontWeight: 800 }}>
                 {children}
               </Typography>
             </Draggable>

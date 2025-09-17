@@ -32,6 +32,7 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         }}
         fitView
         style={{ width: '100%', height: '100%' }}
+        elementsSelectable
       >
         <MiniMap />
         <Background />

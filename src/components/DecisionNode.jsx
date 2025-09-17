@@ -1,32 +1,86 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 const DecisionNode = ({ id, data }) => {
+  const [label, setLabel] = useState(data?.label || 'Decision');
+  const [yesLabel, setYesLabel] = useState(data?.yesLabel || 'Yes');
+  const [noLabel, setNoLabel] = useState(data?.noLabel || 'No');
+
+  const handleUpdate = (key, value) => {
+    if (data?.updateNode) {
+      data.updateNode(id, { [key]: value });
+    }
+  };
+
   return (
-    <Paper elevation={3} sx={{ p: 1, minWidth: 180, bgcolor: '#8e24aa', color: '#fff', position: 'relative' }}>
-      <Handle type="target" position={Position.Top} style={{ background: '#fff' }} />
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: '#fff', border: '1px solid #8e24aa' }}
+      />
 
-      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-        🔀 {data?.label || 'Decision Split'}
-      </Typography>
+      <Box
+        sx={{
+          background: '#8e24aa',
+          display: 'flex',
+          alignItems: 'center',
+          px: 2,
+          py: 1
+        }}
+      >
+        <CallSplitIcon sx={{ mr: 1 }} fontSize="small" />
+        <Typography sx={{ fontWeight: 600 }}>
+          {label}
+        </Typography>
+      </Box>
 
-      <Box sx={{ mt: 1 }}>
+      <Box sx={{ p: 2 }}>
         <TextField
-          label="Label"
           fullWidth
           size="small"
-          defaultValue={data?.label}
-          onBlur={(e) => data?.updateNode?.(id, { label: e.target.value })}
+          label="Node Label"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          onBlur={() => handleUpdate('label', label)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          fullWidth
+          size="small"
+          label="Yes Condition Label"
+          value={yesLabel}
+          onChange={(e) => setYesLabel(e.target.value)}
+          onBlur={() => handleUpdate('yesLabel', yesLabel)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          fullWidth
+          size="small"
+          label="No Condition Label"
+          value={noLabel}
+          onChange={(e) => setNoLabel(e.target.value)}
+          onBlur={() => handleUpdate('noLabel', noLabel)}
         />
       </Box>
 
-      {/* Example of two outgoing handles for branching */}
-      <Handle id="yes" type="source" position={Position.Bottom} style={{ left: '30%', background: '#fff' }} />
-      <Handle id="no" type="source" position={Position.Bottom} style={{ left: '70%', background: '#fff' }} />
+      <Handle
+        id="yes"
+        type="source"
+        position={Position.Bottom}
+        style={{ left: '30%', background: '#fff', border: '1px solid #8e24aa' }}
+      />
+      <Handle
+        id="no"
+        type="source"
+        position={Position.Bottom}
+        style={{ left: '70%', background: '#fff', border: '1px solid #8e24aa' }}
+      />
     </Paper>
   );
 };

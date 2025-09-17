@@ -1,32 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 const WaitNode = ({ id, data }) => {
-  const duration = data?.duration || 60;
+  const [duration, setDuration] = useState(data?.duration || 60);
+
+  const handleUpdate = (value) => {
+    if (data?.updateNode) {
+      data.updateNode(id, { duration: value });
+    }
+  };
 
   return (
-    <Paper elevation={3} sx={{ p: 1, minWidth: 160, bgcolor: '#ff9800', color: '#000', position: 'relative' }}>
-      <Handle type="target" position={Position.Top} style={{ background: '#222' }} />
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: '#fff', border: '1px solid #11aebc' }}
+      />
 
-      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-        ⏱️ {data?.label || 'Wait'}
-      </Typography>
+      <Box
+        sx={{
+          background: '#11aebc',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 2,
+          py: 1
+        }}
+      >
+        <Box display="flex" alignItems="center">
+          <AccessTimeIcon sx={{ mr: 1 }} fontSize="small" />
+          <Typography sx={{ fontWeight: 600 }}>
+           Wait
+          </Typography>
+        </Box>
+      </Box>
 
-      <Box sx={{ mt: 1 }}>
+      <Box sx={{ p: 2 }}>
         <TextField
-          label="Duration (s)"
-          type="number"
+          fullWidth
           size="small"
-          defaultValue={duration}
-          onBlur={(e) => data?.updateNode?.(id, { duration: Number(e.target.value) })}
+          label="Duration (seconds)"
+          type="number"
+          value={duration}
+          onChange={(e) => setDuration(Number(e.target.value))}
         />
       </Box>
 
-      <Handle type="source" position={Position.Bottom} style={{ background: '#222' }} />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        style={{ background: '#fff', border: '1px solid #11aebc' }}
+      />
     </Paper>
   );
 };

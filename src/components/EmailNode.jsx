@@ -2,66 +2,73 @@ import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
 import { Handle, Position } from '@xyflow/react';
+import SendIcon from '@mui/icons-material/Send';
 
 const EmailNode = ({ id, data }) => {
-  const [editing, setEditing] = useState(false);
-  const subject = data?.subject || '';
-  const body = data?.body || '';
+  const [subject, setSubject] = useState(data?.subject || '');
+  const [body, setBody] = useState(data?.body || '');
 
-  const toggleEdit = () => setEditing((s) => !s);
-
-  const save = () => {
-    data?.updateNode?.(id, { subject, body });
-    setEditing(false);
+  const handleUpdate = (field, value) => {
+    if (data?.updateNode) {
+      data.updateNode(id, { [field]: value });
+    }
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 1, minWidth: 220, bgcolor: '#1976d2', color: '#fff', position: 'relative' }}>
-      <Handle type="target" position={Position.Top} style={{ background: '#fff' }} />
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: '#fff', border: '1px solid #8121d6' }}
+      />
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-          📧 {data?.label || 'Send Email'}
-        </Typography>
-        <Box>
-          <IconButton size="small" onClick={toggleEdit} sx={{ color: 'white' }}>
-            {editing ? <SaveIcon fontSize="small" /> : <EditIcon fontSize="small" />}
-          </IconButton>
+      <Box
+        sx={{
+          background: '#8121d6',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 2,
+          py: 1
+        }}
+      >
+        <Box display="flex" alignItems="center">
+          <SendIcon sx={{ transform: 'rotate(-45deg)', mr: 1 }} fontSize="small" />
+          <Typography sx={{ fontWeight: 600 }}>
+            Email Message
+          </Typography>
         </Box>
       </Box>
 
-      {editing ? (
-        <Box sx={{ mt: 1 }}>
-          <TextField
-            label="Subject"
-            fullWidth
-            size="small"
-            defaultValue={subject}
-            onBlur={(e) => data?.updateNode?.(id, { subject: e.target.value })}
-          />
-          <TextField
-            label="Body"
-            fullWidth
-            size="small"
-            multiline
-            minRows={3}
-            defaultValue={body}
-            onBlur={(e) => data?.updateNode?.(id, { body: e.target.value })}
-            sx={{ mt: 1 }}
-          />
-        </Box>
-      ) : (
-        <Typography variant="caption" sx={{ mt: 1, display: 'block', opacity: 0.95 }}>
-          {subject || 'No subject set'}
-        </Typography>
-      )}
+      <Box sx={{ p: 2 }}>
+        <TextField
+          fullWidth
+          size="small"
+          label="Subject"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          onBlur={() => handleUpdate('subject', subject)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          fullWidth
+          size="small"
+          multiline
+          minRows={3}
+          label="Body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          onBlur={() => handleUpdate('body', body)}
+        />
+      </Box>
 
-      <Handle type="source" position={Position.Bottom} style={{ background: '#fff' }} />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        style={{ background: '#fff', border: '1px solid #8121d6' }}
+      />
     </Paper>
   );
 };

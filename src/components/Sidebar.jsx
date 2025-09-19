@@ -12,8 +12,10 @@ import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
 
+
 import List from '@mui/material/List';
 import NodeItem from './NodeItem';
+import colors from '../colors';
 
 const Sidebar = ({ onValidate }) => {
   return (
@@ -28,16 +30,16 @@ const Sidebar = ({ onValidate }) => {
       }}
     >
       <Box sx={{ mb: 3, background: '#f3f4f6', padding: 2, borderBottom: '1px solid #e5e7eb', fontFamily: 'Inter, sans-serif' }}>
-        <Typography gutterBottom sx={{ fontWeight: 700, color: '#191d28' }}>
+        <Typography gutterBottom sx={{ fontWeight: 700, color: colors.grey[800] }}>
           Components
         </Typography>
-        <Typography sx={{ mb: 1, fontSize: '13px', color: '#abacb1', fontFamily: 'Inter, sans-serif' }}>
+        <Typography sx={{ mb: 1, fontSize: '13px', color:colors.grey[500], fontFamily: 'Inter, sans-serif' }}>
           Select steps to build out your journey.
         </Typography>
       </Box>
 
       <Box sx={{ p: 2 }}>
-        <Typography sx={{ fontWeight: 700, mb: 1, color: '#999b9f', ml: 1 }}>Basic Components</Typography>
+        <Typography sx={{ fontWeight: 700, mb: 1, color:colors.grey[600], ml: 1 }}>Basic Components</Typography>
         <List>
           <NodeItem type="emailNode" icon={<MailOutlineIcon />}>
             Send Email
@@ -50,7 +52,7 @@ const Sidebar = ({ onValidate }) => {
             Delay
           </NodeItem>
 
-          <Typography sx={{ fontWeight: 700, mb: 1, color: '#999b9f', ml: 1, mt: 3 }}>Flow Controls</Typography>
+          <Typography sx={{ fontWeight: 700, mb: 1, color:colors.grey[600], ml: 1, mt: 3 }}>Flow Controls</Typography>
           <NodeItem type="decisionNode" icon={<AccountTreeRoundedIcon />}>
             Decision Split
           </NodeItem>
@@ -85,7 +87,7 @@ const Sidebar = ({ onValidate }) => {
         left: 16,
 
       }}>
-        <Button variant="contained" color="primary" style={{ backgroundColor: "#7d22d8" }} fullWidth onClick={onValidate} >
+        <Button variant="contained" color="primary" style={{ backgroundColor: colors.primary.main }} fullWidth onClick={onValidate} >
           Validate Workflow
         </Button>
       </Box>

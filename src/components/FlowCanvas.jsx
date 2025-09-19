@@ -14,14 +14,18 @@ import MessageNode from './nodes/MessageNode';
 import AddVarient from './nodes/AddVarient';
 import EntryRules from './nodes/EntryRules';
 import CustomNode from './nodes/CustomNode';
+import colors from '../colors';
 
 const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick, onInit }) => {
+  const safeNodes = Array.isArray(nodes) ? nodes : (console.warn('[FlowCanvas] nodes is not an array, falling back to []'), []);
+  const safeEdges = Array.isArray(edges) ? edges : (console.warn('[FlowCanvas] edges is not an array, falling back to []'), []);
+
   return (
     <Box sx={{ flex: 1, height: '100vh' }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
       autoPanOnNodeFocus
-        nodes={nodes}
-        edges={edges}
+        nodes={safeNodes}
+        edges={safeEdges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
@@ -44,13 +48,13 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         style={{ width: '100%', height: '100%' }}
         defaultEdgeOptions={{
           style: {
-            stroke: '#7d22d8',
+            stroke: colors.primary.main,
             strokeWidth: 2.5,
             strokeLinecap: 'round',
           },
           animated: false,
-          labelBgStyle: { fill: '#fff', fillOpacity: 0.95 },
-          labelStyle: { fontWeight: 600, fontSize: 12, color: '#111827' },
+          labelBgStyle: { fill: colors.grey[100], fillOpacity: 0.95 },
+          labelStyle: { fontWeight: 600, fontSize: 12, color: colors.grey[900] },
         }}
         elementsSelectable
       >

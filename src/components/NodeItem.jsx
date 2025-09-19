@@ -3,6 +3,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
+import colors from '../colors';
 
 
 const NodeItem = ({ type, children, selected = false, icon }) => {
@@ -22,14 +23,14 @@ const NodeItem = ({ type, children, selected = false, icon }) => {
           opacity: 1,
         },
         '&:hover .node-icon': {
-          color: '#8121d6',
+          color: colors.secondary.light,
         },
         '&:hover .node-text': {
           opacity: 1,
         },
       })}
     >
-      <ListItemIcon className="node-icon" sx={{ p: 1.5, background: '#f3f4fb', minWidth: 'auto', borderRadius: 1.5, mr: 2, color: '#9CA3AF' }}>
+      <ListItemIcon className="node-icon" sx={{ p: 1.5, background: colors.grey[400], minWidth: 'auto', borderRadius: 1.5, mr: 2, color: '#9CA3AF' }}>
         {icon}
       </ListItemIcon>
       <Typography className="node-text" sx={{ opacity: 0.7 }} fontWeight={600} fontFamily={'Inter, sans-serif'}>

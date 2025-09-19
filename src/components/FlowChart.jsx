@@ -27,6 +27,7 @@ const FlowChart = () => {
       const next = applyNodeChanges(changes, nodes || []);
       dispatch(setNodes(next));
     } else {
+      // assume full nodes array
       dispatch(setNodes(changes));
     }
   }, [dispatch, nodes]);

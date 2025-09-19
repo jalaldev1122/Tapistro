@@ -64,8 +64,8 @@ body {
   border: 2px solid #8121d6 !important;
   outline: 4px solid rgba(129, 33, 214, 0.1) !important;
   border-radius: 50px !important;
-  width: 18px !important;
-  height: 18px !important;
+  width: 16px !important;
+  height: 16px !important;
   position: absolute;
 }
 
@@ -74,8 +74,15 @@ body {
   color: #d6c9f0;
   font-size: 16px;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+}
+
+
+.react-flow__edge.selected path {
+  stroke: #4c0099 !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 4px rgba(119, 79, 231, 0.5));
 }

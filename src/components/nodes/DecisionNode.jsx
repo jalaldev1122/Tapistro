@@ -19,7 +19,7 @@ const DecisionNode = ({ id, data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative',borderRadius:'8px' }}>
+    <Paper elevation={3} sx={{ width: 250, color: '#fff', position: 'relative', borderRadius: '8px' }}>
       <Box
         sx={{
           background: '#8121d6',
@@ -27,8 +27,8 @@ const DecisionNode = ({ id, data }) => {
           alignItems: 'center',
           px: 2,
           py: 1,
-          border: '1px solid #8121d6' ,
-             borderRadius: '8px 8px 0px 0px'
+          border: '1px solid #8121d6',
+          borderRadius: '8px 8px 0px 0px'
         }}
       >
         <CallSplitIcon sx={{ mr: 1 }} fontSize="small" />
@@ -64,7 +64,7 @@ const DecisionNode = ({ id, data }) => {
           onChange={(e) => setNoLabel(e.target.value)}
           onBlur={() => handleUpdate('noLabel', noLabel)}
         />
-        <Handle  type="target" position={Position.Top} style={{ background: '#8e24aa' }} />
+        <Handle type="target" position={Position.Top} style={{ background: '#8e24aa' }} />
         <Handle id={'no'} type="source" position={Position.Bottom} style={{ left: '60%', background: '#fff', border: '1px solid #8e24aa' }} />
         <Handle id={'yes'} type="source" position={Position.Bottom} style={{ left: '40%', background: '#fff', border: '1px solid #8e24aa' }} />
       </Box>

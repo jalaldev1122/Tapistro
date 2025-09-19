@@ -18,16 +18,6 @@ const EntryRules = ({ id, data }) => {
 
     return (
         <Box sx={{ position: 'relative', overflow: 'visible', width: 250 }}>
-            <Handle
-                type="target"
-                position={Position.Top}
-                style={{
-                    background: '#fff',
-                    border: '1px solid #8121d6',
-                    zIndex: 10,
-                }}
-            />
-
             <Paper
                 elevation={3}
                 sx={{

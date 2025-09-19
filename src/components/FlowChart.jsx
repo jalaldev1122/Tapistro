@@ -8,6 +8,8 @@ import useWorkflowValidator from './WorkflowValidator';
 import Sidebar from './Sidebar';
 import FlowCanvas from './FlowCanvas';
 import ValidationDialog from './ValidationDialog';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+
 
 let id = 1;
 const getId = () => `node_${id++}`;
@@ -48,6 +50,9 @@ const FlowChart = () => {
   const { validateWorkflow } = useWorkflowValidator();
   const [validationOpen, setValidationOpen] = useState(false);
   const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
+  const [open, setOpen] = useState(false);
+  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [labelInput, setLabelInput] = useState('');
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -66,7 +71,7 @@ const FlowChart = () => {
         y: event.clientY - reactFlowBounds.top,
       };
 
-  const nodeId = getId();
+      const nodeId = getId();
       const labelMap = {
         emailNode: 'Email',
         messageNode: 'Message',
@@ -117,11 +122,10 @@ const FlowChart = () => {
 
   const onEdgeDoubleClick = useCallback((event, edge) => {
     const current = edge.label || edge.data?.condition || '';
-    const next = window.prompt('Edit condition label for this branch', current);
-    if (next !== null) {
-      dispatch(setEdges(edges.map((e) => (e.id === edge.id ? { ...e, label: next, data: { ...e.data, condition: next } } : e))));
-    }
-  }, [dispatch, edges]);
+    setSelectedEdge(edge);
+    setLabelInput(current);
+    setOpen(true);
+  }, []);
 
   const handleNodesDelete = useCallback((deleted) => {
     const ids = new Set(deleted.map((d) => d.id));
@@ -161,6 +165,24 @@ const FlowChart = () => {
     }
   };
 
+  const handleCancel = () => {
+    setOpen(false);
+    setSelectedEdge(null);
+    setLabelInput('');
+  };
+
+  const handleSave = () => {
+    if (selectedEdge) {
+      dispatch(setEdges(edges.map((e) =>
+        e.id === selectedEdge.id
+          ? { ...e, label: labelInput, data: { ...e.data, condition: labelInput } }
+          : e
+      )));
+    }
+    setOpen(false);
+    setSelectedEdge(null);
+    setLabelInput('');
+  };
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <Sidebar onValidate={handleValidate} />
@@ -183,6 +205,23 @@ const FlowChart = () => {
         findNodeForMessage={(msg) => findNodeForMessageHelper(nodes, msg)}
         highlightNode={highlightNode}
       />
+      <Dialog open={open} onClose={handleCancel}>
+        <DialogTitle>Label</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            fullWidth
+            variant="outlined"
+            value={labelInput}
+            onChange={(e) => setLabelInput(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button onClick={handleSave} variant="contained">Save</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

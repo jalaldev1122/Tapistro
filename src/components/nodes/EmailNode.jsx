@@ -19,7 +19,7 @@ const EmailNode = ({ id, data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative',borderRadius:'8px' }}>
+    <Paper elevation={3} sx={{ width: 300, color: '#fff', position: 'relative',borderRadius:'8px' }}>
       <Handle
         type="target"
         position={Position.Top}

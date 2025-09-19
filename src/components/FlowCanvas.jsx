@@ -53,8 +53,9 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
             strokeLinecap: 'round',
           },
           animated: false,
-          labelBgStyle: { fill: colors.grey[100], fillOpacity: 0.95 },
-          labelStyle: { fontWeight: 600, fontSize: 12, color: colors.grey[900] },
+          focusable: true,
+          labelBgStyle: { fill: colors.grey[100], fillOpacity: 0.95,border:'1px solid red' },
+          labelStyle: { fontWeight: 600, fontSize: 14, color:'red' },
         }}
         elementsSelectable
       >

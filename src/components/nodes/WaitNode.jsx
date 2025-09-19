@@ -16,27 +16,29 @@ const WaitNode = ({ id, data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative', borderRadius: '8px' }}>
       <Handle
         type="target"
         position={Position.Top}
-        style={{ background: '#fff', border: '1px solid #11aebc' }}
+        style={{ background: '#fff', border: '1px solid #8121d6' }}
       />
 
       <Box
         sx={{
-          background: '#11aebc',
+          background: '#8121d6',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           px: 2,
-          py: 1
+          py: 1,
+          borderRadius: '8px 8px 0px 0px'
+
         }}
       >
         <Box display="flex" alignItems="center">
           <AccessTimeIcon sx={{ mr: 1 }} fontSize="small" />
           <Typography sx={{ fontWeight: 600 }}>
-           Wait
+            Wait
           </Typography>
         </Box>
       </Box>
@@ -55,7 +57,7 @@ const WaitNode = ({ id, data }) => {
       <Handle
         type="source"
         position={Position.Bottom}
-        style={{ background: '#fff', border: '1px solid #11aebc' }}
+        style={{ background: '#fff', border: '1px solid #8121d6' }}
       />
     </Paper>
   );

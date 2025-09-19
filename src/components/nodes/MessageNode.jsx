@@ -16,11 +16,11 @@ const MessageNode = ({ id, data }) => {
     };
 
     return (
-        <Paper elevation={3} sx={{ width: 320, color: '#fff', position: 'relative' }}>
+        <Paper elevation={3} sx={{ width: 320, color: '#fff', position: 'relative', borderRadius: '8px' }}>
             <Handle
                 type="target"
                 position={Position.Top}
-                style={{ background: '#fff', border: '1px solid #8121d6' }}
+                style={{ background: '#fff', border: '1px solid #8121d6', }}
             />
 
             <Box
@@ -30,13 +30,14 @@ const MessageNode = ({ id, data }) => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     px: 2,
-                    py: 1
+                    py: 1,
+                    borderRadius: '8px 8px 0px 0px'
                 }}
             >
                 <Box display="flex" alignItems="center" justifyContent='center'>
-                    <SendRoundedIcon sx={{ transform: 'rotate(-35deg)', mr: 1, mt:-.5 }} fontSize="small" />
+                    <SendRoundedIcon sx={{ transform: 'rotate(-35deg)', mr: 1, mt: -.5 }} fontSize="small" />
                     <Typography sx={{ fontWeight: 600 }}>
-                         Message
+                        Message
                     </Typography>
                 </Box>
             </Box>

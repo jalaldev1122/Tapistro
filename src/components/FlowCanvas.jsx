@@ -6,15 +6,14 @@ import {
   Controls,
   MiniMap,
 } from '@xyflow/react';
-import CustomNode from './CustomNode';
-import EmailNode from './EmailNode';
-import WaitNode from './WaitNode';
-import DecisionNode from './DecisionNode';
-import UpdateProfileNode from './UpdateProfileNode';
-import FreeNode from './FreeNode';
-import MessageNode from './MessageNode';
-import AddVarient from './AddVarient';
-import EntryRules from './EntryRules';
+import EmailNode from './nodes/EmailNode';
+import WaitNode from './nodes/WaitNode';
+import DecisionNode from './nodes/DecisionNode';
+import UpdateProfileNode from './nodes/UpdateProfileNode';
+import MessageNode from './nodes/MessageNode';
+import AddVarient from './nodes/AddVarient';
+import EntryRules from './nodes/EntryRules';
+import CustomNode from './nodes/CustomNode';
 
 const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick }) => {
   return (
@@ -34,7 +33,6 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
           emailNode: EmailNode,
           waitNode: WaitNode,
           decisionNode: DecisionNode,
-          freeNode: FreeNode,
           updateProfileNode: UpdateProfileNode,
           messageNode:MessageNode,
           addVarient: AddVarient,
@@ -42,6 +40,16 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         }}
         fitView
         style={{ width: '100%', height: '100%' }}
+        defaultEdgeOptions={{
+          style: {
+            stroke: '#7d22d8',
+            strokeWidth: 2.5,
+            strokeLinecap: 'round',
+          },
+          animated: false,
+          labelBgStyle: { fill: '#fff', fillOpacity: 0.95 },
+          labelStyle: { fontWeight: 600, fontSize: 12, color: '#111827' },
+        }}
         elementsSelectable
       >
         <MiniMap />

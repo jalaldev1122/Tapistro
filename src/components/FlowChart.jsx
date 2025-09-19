@@ -1,9 +1,19 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Chip from '@mui/material/Chip';
 import { addEdge, useNodesState, useEdgesState } from '@xyflow/react';
 import useWorkflowValidator from './WorkflowValidator';
 import Sidebar from './Sidebar';
 import FlowCanvas from './FlowCanvas';
+import ValidationDialog from './ValidationDialog';
 
 let id = 1;
 const getId = () => `node_${id++}`;
@@ -12,6 +22,8 @@ const FlowChart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { validateWorkflow } = useWorkflowValidator();
+  const [validationOpen, setValidationOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -31,6 +43,30 @@ const FlowChart = () => {
       };
 
       const nodeId = getId();
+      // friendly labels for node types
+      const labelMap = {
+        emailNode: 'Email',
+        messageNode: 'Message',
+        waitNode: 'Delay',
+        decisionNode: 'Decision Split',
+        updateProfileNode: 'Update Profile',
+        actionPath: 'Action Path',
+        experimentPath: 'Experiment Path',
+        addVarient: 'Add Variant',
+        entryRules: 'Entry Rules',
+        customNode: 'Custom',
+      };
+
+      const humanize = (s) => {
+        if (!s) return s;
+        // camelCase or snake/kebab -> Title Case
+        const words = s
+          .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+          .replace(/[-_]/g, ' ')
+          .split(' ')
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1));
+        return words.join(' ');
+      };
       const updateNode = (nid, patch) => {
         setNodes((nds) => nds.map((n) => (n.id === nid ? { ...n, data: { ...n.data, ...patch } } : n)));
       };
@@ -40,7 +76,7 @@ const FlowChart = () => {
         type,
         position,
         data: {
-          label: `New ${type}`,
+          label: labelMap[type] || humanize(type) || `Node ${nodeId}`,
           ...(type === 'emailNode' && { emailTemplateId: '' }),
           ...(type === 'waitNode' && { duration: 1 }),
           updateNode,
@@ -54,7 +90,6 @@ const FlowChart = () => {
 
 
   const onConnect = useCallback((params) => {
-    // Derive a default label from the source handle (useful for decision nodes)
     const handleLabelMap = { yes: 'Yes', no: 'No' };
     const defaultLabel = handleLabelMap[params.sourceHandle] || '';
 
@@ -64,7 +99,6 @@ const FlowChart = () => {
       label: defaultLabel,
       animated: false,
       data: { condition: defaultLabel },
-      // styling for readable label background
       labelBgStyle: { fill: '#fff', fillOpacity: 0.9 },
       labelBgPadding: [6, 2],
       labelStyle: { fontWeight: 600, fontSize: 12 },
@@ -74,7 +108,6 @@ const FlowChart = () => {
   }, [setEdges]);
 
   const onEdgeDoubleClick = useCallback((event, edge) => {
-    // simple prompt for editing edge label — could be replaced with a drawer/modal
     const current = edge.label || edge.data?.condition || '';
     const next = window.prompt('Edit condition label for this branch', current);
     if (next !== null) {
@@ -82,9 +115,7 @@ const FlowChart = () => {
     }
   }, [setEdges]);
 
-  // Delete nodes and any edges connected to them
   const handleNodesDelete = useCallback((deleted) => {
-    // `deleted` is an array of node objects provided by React Flow's onNodesDelete
     const ids = new Set(deleted.map((d) => d.id));
     setNodes((nds) => nds.filter((n) => !ids.has(n.id)));
     setEdges((eds) => eds.filter((e) => !ids.has(e.source) && !ids.has(e.target)));
@@ -93,11 +124,23 @@ const FlowChart = () => {
 
   const handleValidate = () => {
     const result = validateWorkflow(nodes, edges);
-    if (result.isValid) {
-      alert('Workflow is valid!');
-    } else {
-      alert(`Errors:\n${result.errors.join('\n')}`);
+    setValidationResult(result);
+    setValidationOpen(true);
+  };
+
+  const closeValidation = () => {
+    setValidationOpen(false);
+  };
+
+
+  const findNodeForMessage = (msg) => {
+    // try to find a node id mentioned in the message by exact id or label
+    for (let n of nodes) {
+      if (msg.includes(n.id)) return n.id;
+      const label = n.data?.label || '';
+      if (label && msg.includes(label)) return n.id;
     }
+    return null;
   };
 
   return (
@@ -113,6 +156,12 @@ const FlowChart = () => {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onNodesDelete={handleNodesDelete}
+      />
+      <ValidationDialog
+        open={validationOpen}
+        onClose={closeValidation}
+        validationResult={validationResult}
+        findNodeForMessage={findNodeForMessage}
       />
     </Box>
   );

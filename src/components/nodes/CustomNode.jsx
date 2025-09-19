@@ -7,7 +7,6 @@ import { Handle, Position } from '@xyflow/react';
 
 const CustomNode = ({ data, id }) => {
   const profile = data?.profile;
-  const type = data?.nodeType || data?.type || id?.split('_')[0];
 
   const label = data?.label || {
     emailNode: 'Send Email',
@@ -36,8 +35,6 @@ const CustomNode = ({ data, id }) => {
 
   return (
     <Paper elevation={3} sx={{ p: 1, minWidth: 180, bgcolor: '#6a1b9a', color: '#fff', position: 'relative' }}>
-      <Handle type="target" position={Position.Top} style={{ background: '#222' }} />
-
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Avatar sx={{ width: 36, height: 36, bgcolor: 'rgba(255,255,255,0.15)' }}>{renderIcon()}</Avatar>
         <Box sx={{ flex: 1 }}>
@@ -45,7 +42,6 @@ const CustomNode = ({ data, id }) => {
             {label}
           </Typography>
 
-          {/* Type-specific small preview */}
           {data?.type === 'emailNode' && (
             <Typography variant="caption" sx={{ opacity: 0.9 }}>
               {emailPreview || 'No subject set'}
@@ -65,8 +61,9 @@ const CustomNode = ({ data, id }) => {
           )}
         </Box>
       </Box>
+      <Handle type="target" position={Position.Top} style={{ background: '#222' }} />
+      <Handle type="source" position={Position.Top} style={{ background: '#222' }} />
 
-      <Handle type="source" position={Position.Bottom} style={{ background: '#222' }} />
     </Paper>
   );
 };

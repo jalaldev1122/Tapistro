@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 const EmailNode = ({ id, data }) => {
   const [subject, setSubject] = useState(data?.subject || '');
   const [body, setBody] = useState(data?.body || '');
+  const [templateId, setTemplateId] = useState(data?.emailTemplateId || '');
 
   const handleUpdate = (field, value) => {
     if (data?.updateNode) {
@@ -17,7 +18,7 @@ const EmailNode = ({ id, data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative',borderRadius:'8px' }}>
       <Handle
         type="target"
         position={Position.Top}
@@ -32,7 +33,7 @@ const EmailNode = ({ id, data }) => {
           alignItems: 'center',
           px: 2,
           py: 1,
-          borderRadius: '4px 4px 0px 0px'
+          borderRadius: '8px 8px 0px 0px'
         }}
       >
         <Box display="flex" alignItems="center">
@@ -44,6 +45,15 @@ const EmailNode = ({ id, data }) => {
       </Box>
 
       <Box sx={{ p: 2 }}>
+        <TextField
+          fullWidth
+          size="small"
+          label="Template ID"
+          value={templateId}
+          onChange={(e) => setTemplateId(e.target.value)}
+          onBlur={() => handleUpdate('emailTemplateId', templateId)}
+          sx={{ mb: 2 }}
+        />
         <TextField
           fullWidth
           size="small"

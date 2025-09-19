@@ -3,8 +3,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { Position } from '@xyflow/react';
-import HandleWithPlus from './HandleWithPlus';
+import { Handle, Position } from '@xyflow/react';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 const DecisionNode = ({ id, data }) => {
@@ -19,23 +18,16 @@ const DecisionNode = ({ id, data }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative' }}>
-      <HandleWithPlus
-        id="in"
-        type="target"
-        position={Position.Top}
-        style={{ background: '#fff', border: '1px solid #8e24aa' }}
-        overlayOffset={-10}
-        overlayColor={'#8e24aa'}
-      />
-
+    <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative',borderRadius:'8px' }}>
       <Box
         sx={{
-          background: '#8e24aa',
+          background: '#8121d6',
           display: 'flex',
           alignItems: 'center',
           px: 2,
-          py: 1
+          py: 1,
+          border: '1px solid #8121d6' ,
+             borderRadius: '8px 8px 0px 0px'
         }}
       >
         <CallSplitIcon sx={{ mr: 1 }} fontSize="small" />
@@ -71,24 +63,10 @@ const DecisionNode = ({ id, data }) => {
           onChange={(e) => setNoLabel(e.target.value)}
           onBlur={() => handleUpdate('noLabel', noLabel)}
         />
+        <Handle  type="target" position={Position.Top} style={{ background: '#8e24aa' }} />
+        <Handle id={'no'} type="source" position={Position.Bottom} style={{ left: '60%', background: '#fff', border: '1px solid #8121d6' }} />
+        <Handle id={'yes'} type="source" position={Position.Bottom} style={{ left: '40%', background: '#fff', border: '1px solid #8121d6' }} />
       </Box>
-
-      <HandleWithPlus
-        id="yes"
-        type="source"
-        position={Position.Bottom}
-        style={{ left: '30%', background: '#fff', border: '1px solid #8e24aa' }}
-        overlayOffset={-10}
-        overlayColor={'#8e24aa'}
-      />
-      <HandleWithPlus
-        id="no"
-        type="source"
-        position={Position.Bottom}
-        style={{ left: '70%', background: '#fff', border: '1px solid #8e24aa' }}
-        overlayOffset={-10}
-        overlayColor={'#8e24aa'}
-      />
     </Paper>
   );
 };

@@ -3,16 +3,17 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import { useDispatch } from 'react-redux';
+import { updateNode } from '../../store/flowSlice';
 
 
 const AddVarient = ({ id, data }) => {
     const [subject, setSubject] = useState(data?.subject || '');
     const [body, setBody] = useState(data?.body || '');
 
+    const dispatch = useDispatch();
     const handleUpdate = (field, value) => {
-        if (data?.updateNode) {
-            data.updateNode(id, { [field]: value });
-        }
+        dispatch(updateNode({ id, [field]: value }));
     };
 
     return (

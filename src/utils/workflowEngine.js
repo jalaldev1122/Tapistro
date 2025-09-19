@@ -46,7 +46,6 @@ function buildAdjacency(nodes = [], edges = []) {
  * @returns {string[]}
  */
 export function getNextNodes(nodeId, edges = []) {
-  // edges are simple objects { source, target }
   return edges.filter((e) => e.source === nodeId).map((e) => e.target);
 }
 
@@ -65,7 +64,6 @@ export function detectCircularDependencies(nodes = [], edges = []) {
 
   const dfs = (nodeId, path = []) => {
     if (onStack.has(nodeId)) {
-      // found a cycle — extract the cycle from the path
       const idx = path.indexOf(nodeId);
       const cycle = idx >= 0 ? path.slice(idx).concat(nodeId) : path.concat(nodeId);
       cycles.push(cycle);
@@ -79,7 +77,6 @@ export function detectCircularDependencies(nodes = [], edges = []) {
     const neighbors = adjacency.get(nodeId) || [];
     for (let nbr of neighbors) {
       if (dfs(nbr, path.concat(nodeId))) {
-        // keep searching to collect all cycles
       }
     }
     onStack.delete(nodeId);
@@ -97,7 +94,7 @@ export function detectCircularDependencies(nodes = [], edges = []) {
  * Return nodes that have no incoming and no outgoing edges (completely isolated).
  * @param {Array} nodes
  * @param {Array} edges
- * @returns {Array} array of node objects
+ * @returns {Array} 
  */
 export function getOrphanedNodes(nodes = [], edges = []) {
   const { adjacency, reverseAdj } = buildAdjacency(nodes, edges);
@@ -127,9 +124,8 @@ export function traverseWorkflow(startNodeId, nodes = [], edges = [], opts = {})
   const results = [];
 
   const dfs = (currentId, path = new Set(), seq = []) => {
-    if (seq.length > maxDepth) return; // safety
+    if (seq.length > maxDepth) return;
     if (path.has(currentId)) {
-      // encountered a cycle in this path; stop this branch
       return;
     }
     path.add(currentId);
@@ -137,7 +133,6 @@ export function traverseWorkflow(startNodeId, nodes = [], edges = [], opts = {})
 
     const neighbors = adjacency.get(currentId) || [];
     if (!neighbors || neighbors.length === 0) {
-      // terminal node — record path
       results.push([...seq]);
     } else {
       for (let nbr of neighbors) {
@@ -171,32 +166,32 @@ export function validateWorkflow(nodes = [], edges = []) {
   const warnings = [];
   const orphaned = getOrphanedNodes(nodes, edges);
 
-  // basic cycle detection
+
   const cyclesRes = detectCircularDependencies(nodes, edges);
   if (cyclesRes.hasCycle) {
     errors.push(`Cycle(s) detected: ${cyclesRes.cycles.map((c) => c.join(' -> ')).join(' ; ')}`);
   }
 
-  // start node existence
+
   const starts = nodes.filter((n) => n.type === 'start');
   if (starts.length === 0) {
     warnings.push('No start node found (type: "start"). Add at least one start node.');
   }
 
-  // terminal nodes
+
   const { adjacency } = buildAdjacency(nodes, edges);
   const terminals = nodes.filter((n) => (adjacency.get(n.id) || []).length === 0);
   if (terminals.length === 0) {
     warnings.push('No terminal (end) node found - ensure there is at least one node with no outgoing edges.');
   }
 
-  // node-specific validations
+
   nodes.forEach((node) => {
     const type = node.type;
     const data = node.data || {};
     switch (type) {
       case 'emailNode':
-      case 'sendEmail': // allow either naming convention
+      case 'sendEmail':
         if (!data.emailTemplateId) {
           errors.push(`Email node "${node.id}" is missing an emailTemplateId in its data.`);
         }
@@ -219,9 +214,7 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   });
 
-  // unreachable nodes (if a start exists we can run reachability)
   if (starts.length > 0) {
-    // run BFS from each start to mark reachable nodes
     const reachable = new Set();
     const queue = [];
     starts.forEach((s) => queue.push(s.id));
@@ -241,7 +234,7 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   }
 
-  // orphaned nodes are reported as warnings but included in return for programmatic use
+ 
   if (orphaned.length > 0) {
     warnings.push(`Orphaned nodes (no in/out): ${orphaned.map((n) => n.id).join(', ')}`);
   }
@@ -271,13 +264,12 @@ export async function executeWorkflow(startNodeId, nodes = [], edges = [], optio
 
   const nodeHandlers = options.nodeHandlers || {};
   const decisionResolver = options.decisionResolver || (async (node, ctx, outgoing) => outgoing[0]);
-  const logger = options.logger || (() => {});
+  const logger = options.logger || (() => { });
   const mode = options.mode || 'singlePath';
 
   const errors = [];
   const executedPaths = [];
 
-  // Helper to execute a single path (array of node ids)
   const execPath = async (path) => {
     const context = { outputs: {} };
     for (let nodeId of path) {
@@ -292,11 +284,9 @@ export async function executeWorkflow(startNodeId, nodes = [], edges = [], optio
       try {
         logger(`Executing ${nodeId} (${node.type})`);
         if (handler) {
-          // allow handler to modify context and return result
           const res = await handler(node, context);
           if (res !== undefined) context.outputs[nodeId] = res;
         } else {
-          // default behavior: record that node was "executed"
           context.outputs[nodeId] = { executed: true };
         }
       } catch (e) {
@@ -310,14 +300,12 @@ export async function executeWorkflow(startNodeId, nodes = [], edges = [], optio
   };
 
   if (mode === 'allPaths') {
-    // compute all paths and execute each sequentially (could be parallelized)
     const paths = traverseWorkflow(startNodeId, nodes, edges);
     for (let p of paths) {
       const r = await execPath(p);
       executedPaths.push(r);
     }
   } else {
-    // singlePath mode: follow a single path resolving decisions via decisionResolver
     const path = [];
     let current = startNodeId;
     const visited = new Set();
@@ -331,13 +319,11 @@ export async function executeWorkflow(startNodeId, nodes = [], edges = [], optio
 
       const outgoing = adjacency.get(current) || [];
       if (!outgoing || outgoing.length === 0) {
-        // terminal
         break;
       }
 
       const currentNode = nodeMap.get(current);
       if (currentNode && (currentNode.type === 'decisionNode' || currentNode.type === 'decisionSplit')) {
-        // resolve which branch to follow
         try {
           const chosen = await decisionResolver(currentNode, { path, nodes, edges }, outgoing);
           if (!chosen) {
@@ -354,7 +340,6 @@ export async function executeWorkflow(startNodeId, nodes = [], edges = [], optio
           break;
         }
       } else {
-        // deterministic single-outgoing traversal: pick first outgoing
         current = outgoing[0];
       }
     }

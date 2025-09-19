@@ -5,16 +5,17 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import SendIcon from '@mui/icons-material/Send';
+import { useDispatch } from 'react-redux';
+import { updateNode } from '../../store/flowSlice';
 
 const EmailNode = ({ id, data }) => {
   const [subject, setSubject] = useState(data?.subject || '');
   const [body, setBody] = useState(data?.body || '');
   const [templateId, setTemplateId] = useState(data?.emailTemplateId || '');
 
+  const dispatch = useDispatch();
   const handleUpdate = (field, value) => {
-    if (data?.updateNode) {
-      data.updateNode(id, { [field]: value });
-    }
+    dispatch(updateNode({ id, [field]: value }));
   };
 
   return (

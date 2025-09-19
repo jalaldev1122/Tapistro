@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import { humanize, findNodeForMessage as findNodeForMessageHelper } from '../utils/helpers';
-import { addEdge, useNodesState, useEdgesState } from '@xyflow/react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setNodes, setEdges, addNode, addEdge, updateNode, removeNode, removeEdge } from '../store/flowSlice';
+import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import useWorkflowValidator from './WorkflowValidator';
 import Sidebar from './Sidebar';
 import FlowCanvas from './FlowCanvas';
@@ -11,8 +13,37 @@ let id = 1;
 const getId = () => `node_${id++}`;
 
 const FlowChart = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const dispatch = useDispatch();
+  const nodes = useSelector((s) => s.flow.nodes);
+  const edges = useSelector((s) => s.flow.edges);
+
+  const onNodesChange = useCallback((changes) => {
+    if (!Array.isArray(changes)) return;
+
+    const first = changes[0];
+    const looksLikeChange = first && typeof first.type === 'string';
+
+    if (looksLikeChange) {
+      const next = applyNodeChanges(changes, nodes || []);
+      dispatch(setNodes(next));
+    } else {
+      dispatch(setNodes(changes));
+    }
+  }, [dispatch, nodes]);
+
+  const onEdgesChange = useCallback((changes) => {
+    if (!Array.isArray(changes)) return;
+
+    const first = changes[0];
+    const looksLikeChange = first && typeof first.type === 'string';
+
+    if (looksLikeChange) {
+      const next = applyEdgeChanges(changes, edges || []);
+      dispatch(setEdges(next));
+    } else {
+      dispatch(setEdges(changes));
+    }
+  }, [dispatch, edges]);
   const { validateWorkflow } = useWorkflowValidator();
   const [validationOpen, setValidationOpen] = useState(false);
   const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
@@ -34,7 +65,7 @@ const FlowChart = () => {
         y: event.clientY - reactFlowBounds.top,
       };
 
-      const nodeId = getId();
+  const nodeId = getId();
       const labelMap = {
         emailNode: 'Email',
         messageNode: 'Message',
@@ -48,11 +79,6 @@ const FlowChart = () => {
         customNode: 'Custom',
       };
 
-      // humanize moved to src/utils/helpers.js
-      const updateNode = (nid, patch) => {
-        setNodes((nds) => nds.map((n) => (n.id === nid ? { ...n, data: { ...n.data, ...patch } } : n)));
-      };
-
       const newNode = {
         id: nodeId,
         type,
@@ -61,11 +87,10 @@ const FlowChart = () => {
           label: labelMap[type] || humanize(type) || `Node ${nodeId}`,
           ...(type === 'emailNode' && { emailTemplateId: '' }),
           ...(type === 'waitNode' && { duration: 1 }),
-          updateNode,
         },
       };
 
-      setNodes((nds) => [...nds, newNode]);
+      dispatch(addNode(newNode));
     },
     [setNodes]
   );
@@ -86,22 +111,21 @@ const FlowChart = () => {
       labelStyle: { fontWeight: 600, fontSize: 12 },
     };
 
-    setEdges((eds) => addEdge(newEdge, eds));
-  }, [setEdges]);
+    dispatch(addEdge(newEdge));
+  }, [dispatch]);
 
   const onEdgeDoubleClick = useCallback((event, edge) => {
     const current = edge.label || edge.data?.condition || '';
     const next = window.prompt('Edit condition label for this branch', current);
     if (next !== null) {
-      setEdges((eds) => eds.map((e) => (e.id === edge.id ? { ...e, label: next, data: { ...e.data, condition: next } } : e)));
+      dispatch(setEdges(edges.map((e) => (e.id === edge.id ? { ...e, label: next, data: { ...e.data, condition: next } } : e))));
     }
-  }, [setEdges]);
+  }, [dispatch, edges]);
 
   const handleNodesDelete = useCallback((deleted) => {
     const ids = new Set(deleted.map((d) => d.id));
-    setNodes((nds) => nds.filter((n) => !ids.has(n.id)));
-    setEdges((eds) => eds.filter((e) => !ids.has(e.source) && !ids.has(e.target)));
-  }, [setNodes, setEdges]);
+    deleted.forEach((d) => dispatch(removeNode(d.id)));
+  }, [dispatch]);
 
 
   const handleValidate = () => {
@@ -113,9 +137,6 @@ const FlowChart = () => {
   const closeValidation = () => {
     setValidationOpen(false);
   };
-
-
-  // helper findNodeForMessage(nodes, msg) moved to src/utils/helpers
 
   const reactFlowRef = React.useRef(null);
 

@@ -5,16 +5,17 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
+import { useDispatch } from 'react-redux';
+import { updateNode } from '../../store/flowSlice';
 
 const DecisionNode = ({ id, data }) => {
   const [label, setLabel] = useState(data?.label || 'Decision');
   const [yesLabel, setYesLabel] = useState(data?.yesLabel || 'Yes');
   const [noLabel, setNoLabel] = useState(data?.noLabel || 'No');
 
+  const dispatch = useDispatch();
   const handleUpdate = (key, value) => {
-    if (data?.updateNode) {
-      data.updateNode(id, { [key]: value });
-    }
+    dispatch(updateNode({ id, [key]: value }));
   };
 
   return (

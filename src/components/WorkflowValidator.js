@@ -1,10 +1,7 @@
-// components/WorkflowValidator.js
 
 import { useCallback } from 'react';
 
-/**
- * Pure validator function (exported for unit tests)
- */
+
 export function validateWorkflow(nodes = [], edges = []) {
   const errors = [];
   const warnings = [];
@@ -12,7 +9,6 @@ export function validateWorkflow(nodes = [], edges = []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const adjacencyList = new Map();
 
-  // Build adjacency list
   nodes.forEach((node) => {
     adjacencyList.set(node.id, []);
   });
@@ -23,7 +19,6 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   });
 
-  // Detect circular dependencies using DFS
   const visited = new Set();
   const recStack = new Set();
 
@@ -52,7 +47,6 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   }
 
-  // Check for orphaned nodes (nodes with no connections)
   const connectedNodeIds = new Set();
   edges.forEach((edge) => {
     connectedNodeIds.add(edge.source);
@@ -65,7 +59,6 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   });
 
-  // Validate node configurations
   nodes.forEach((node) => {
     const type = node.type;
     const data = node.data || {};
@@ -89,7 +82,6 @@ export function validateWorkflow(nodes = [], edges = []) {
         break;
       }
       default:
-        // Add more types as needed
         break;
     }
   });

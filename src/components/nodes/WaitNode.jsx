@@ -5,14 +5,15 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useDispatch } from 'react-redux';
+import { updateNode } from '../../store/flowSlice';
 
 const WaitNode = ({ id, data }) => {
   const [duration, setDuration] = useState(data?.duration || 60);
 
+  const dispatch = useDispatch();
   const handleUpdate = (value) => {
-    if (data?.updateNode) {
-      data.updateNode(id, { duration: value });
-    }
+    dispatch(updateNode({ id, duration: value }));
   };
 
   return (

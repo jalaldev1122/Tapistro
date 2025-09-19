@@ -21,7 +21,6 @@ const NodeItem = ({ type, children, selected = false, icon }) => {
           borderRadius: 2,
           opacity: 1,
         },
-        // when hovering the whole list item, target child elements
         '&:hover .node-icon': {
           color: '#8121d6',
         },

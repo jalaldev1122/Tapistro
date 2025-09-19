@@ -6,22 +6,8 @@ import { Handle, Position } from '@xyflow/react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
 const MessageNode = ({ id, data }) => {
-    const [subject, setSubject] = useState(data?.subject || '');
-    const [body, setBody] = useState(data?.body || '');
-
-    const handleUpdate = (field, value) => {
-        if (data?.updateNode) {
-            data.updateNode(id, { [field]: value });
-        }
-    };
-
     return (
         <Paper elevation={3} sx={{ width: 320, color: '#fff', position: 'relative', borderRadius: '8px' }}>
-            <Handle
-                type="target"
-                position={Position.Top}
-                style={{ background: '#fff', border: '1px solid #8121d6', }}
-            />
 
             <Box
                 sx={{
@@ -64,6 +50,11 @@ const MessageNode = ({ id, data }) => {
                 </Box>
             </Box>
 
+            <Handle
+                type="target"
+                position={Position.Top}
+                style={{ background: '#fff', border: '1px solid #8121d6', }}
+            />
             <Handle
                 type="source"
                 position={Position.Bottom}

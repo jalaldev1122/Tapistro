@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
+import { humanize, findNodeForMessage as findNodeForMessageHelper } from '../utils/helpers';
 import { addEdge, useNodesState, useEdgesState } from '@xyflow/react';
 import useWorkflowValidator from './WorkflowValidator';
 import Sidebar from './Sidebar';
@@ -34,7 +35,6 @@ const FlowChart = () => {
       };
 
       const nodeId = getId();
-      // friendly labels for node types
       const labelMap = {
         emailNode: 'Email',
         messageNode: 'Message',
@@ -48,16 +48,7 @@ const FlowChart = () => {
         customNode: 'Custom',
       };
 
-      const humanize = (s) => {
-        if (!s) return s;
-        // camelCase or snake/kebab -> Title Case
-        const words = s
-          .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-          .replace(/[-_]/g, ' ')
-          .split(' ')
-          .map((w) => w.charAt(0).toUpperCase() + w.slice(1));
-        return words.join(' ');
-      };
+      // humanize moved to src/utils/helpers.js
       const updateNode = (nid, patch) => {
         setNodes((nds) => nds.map((n) => (n.id === nid ? { ...n, data: { ...n.data, ...patch } } : n)));
       };
@@ -124,17 +115,8 @@ const FlowChart = () => {
   };
 
 
-  const findNodeForMessage = (msg) => {
-    // try to find a node id mentioned in the message by exact id or label
-    for (let n of nodes) {
-      if (msg.includes(n.id)) return n.id;
-      const label = n.data?.label || '';
-      if (label && msg.includes(label)) return n.id;
-    }
-    return null;
-  };
+  // helper findNodeForMessage(nodes, msg) moved to src/utils/helpers
 
-  // react flow instance ref will be populated by FlowCanvas via onInit
   const reactFlowRef = React.useRef(null);
 
   const setReactFlowInstance = (rfi) => {
@@ -145,7 +127,6 @@ const FlowChart = () => {
     const node = nodes.find((n) => n.id === nodeId);
     if (!node || !reactFlowRef.current) return;
     const pos = node.position || { x: 0, y: 0 };
-    // try to center the view on the node; some reactflow instances expose setCenter
     try {
       if (typeof reactFlowRef.current.setCenter === 'function') {
         reactFlowRef.current.setCenter(pos.x, pos.y, { duration: 400 });
@@ -155,7 +136,6 @@ const FlowChart = () => {
         reactFlowRef.current.fitView({ padding: 0.2, includeNodes: [node] });
       }
     } catch (err) {
-      // best effort - ignore errors
     }
   };
 
@@ -178,7 +158,7 @@ const FlowChart = () => {
         open={validationOpen}
         onClose={closeValidation}
         validationResult={validationResult}
-        findNodeForMessage={findNodeForMessage}
+        findNodeForMessage={(msg) => findNodeForMessageHelper(nodes, msg)}
         highlightNode={highlightNode}
       />
     </Box>

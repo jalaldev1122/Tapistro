@@ -19,6 +19,7 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
   return (
     <Box sx={{ flex: 1, height: '100vh' }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
+      autoPanOnNodeFocus
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -27,6 +28,7 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         onEdgeDoubleClick={onEdgeDoubleClick}
         onNodeClick={onNodeClick}
         onNodesDelete={onNodesDelete}
+        deleteKeyCode={['Backspace', 'Delete']}
         onInit={onInit}
         nodeTypes={{
           customNode: CustomNode,

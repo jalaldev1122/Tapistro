@@ -63,7 +63,6 @@ const CustomNode = ({ data, id }) => {
       </Box>
       <Handle type="target" position={Position.Top} style={{ background: '#222' }} />
       <Handle type="source" position={Position.Top} style={{ background: '#222' }} />
-
     </Paper>
   );
 };

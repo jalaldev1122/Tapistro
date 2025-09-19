@@ -1,14 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Chip from '@mui/material/Chip';
 import { addEdge, useNodesState, useEdgesState } from '@xyflow/react';
 import useWorkflowValidator from './WorkflowValidator';
 import Sidebar from './Sidebar';
@@ -143,6 +134,31 @@ const FlowChart = () => {
     return null;
   };
 
+  // react flow instance ref will be populated by FlowCanvas via onInit
+  const reactFlowRef = React.useRef(null);
+
+  const setReactFlowInstance = (rfi) => {
+    reactFlowRef.current = rfi;
+  };
+
+  const highlightNode = (nodeId) => {
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node || !reactFlowRef.current) return;
+    const pos = node.position || { x: 0, y: 0 };
+    // try to center the view on the node; some reactflow instances expose setCenter
+    try {
+      if (typeof reactFlowRef.current.setCenter === 'function') {
+        reactFlowRef.current.setCenter(pos.x, pos.y, { duration: 400 });
+      } else if (typeof reactFlowRef.current.setViewport === 'function') {
+        reactFlowRef.current.setViewport({ x: pos.x, y: pos.y }, { duration: 400 });
+      } else if (typeof reactFlowRef.current.fitView === 'function') {
+        reactFlowRef.current.fitView({ padding: 0.2, includeNodes: [node] });
+      }
+    } catch (err) {
+      // best effort - ignore errors
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <Sidebar onValidate={handleValidate} />
@@ -156,12 +172,14 @@ const FlowChart = () => {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onNodesDelete={handleNodesDelete}
+        onInit={setReactFlowInstance}
       />
       <ValidationDialog
         open={validationOpen}
         onClose={closeValidation}
         validationResult={validationResult}
         findNodeForMessage={findNodeForMessage}
+        highlightNode={highlightNode}
       />
     </Box>
   );

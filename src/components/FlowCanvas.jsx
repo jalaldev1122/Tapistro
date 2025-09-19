@@ -15,7 +15,7 @@ import AddVarient from './nodes/AddVarient';
 import EntryRules from './nodes/EntryRules';
 import CustomNode from './nodes/CustomNode';
 
-const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick }) => {
+const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick, onInit }) => {
   return (
     <Box sx={{ flex: 1, height: '100vh' }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
@@ -27,14 +27,14 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         onEdgeDoubleClick={onEdgeDoubleClick}
         onNodeClick={onNodeClick}
         onNodesDelete={onNodesDelete}
+        onInit={onInit}
         nodeTypes={{
           customNode: CustomNode,
-          messageNode: EmailNode,
           emailNode: EmailNode,
           waitNode: WaitNode,
           decisionNode: DecisionNode,
           updateProfileNode: UpdateProfileNode,
-          messageNode:MessageNode,
+          messageNode: MessageNode,
           addVarient: AddVarient,
           entryRules:EntryRules
         }}

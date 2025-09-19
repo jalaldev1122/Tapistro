@@ -27,7 +27,7 @@ const ValidationDialog = ({ open, onClose, validationResult = { errors: [], warn
                   <ListItemText primary={`Errors (${validationResult.errors.length})`} />
                 </ListItem>
                 {validationResult.errors.map((e, idx) => (
-                  <ListItem key={`err-${idx}`} secondaryAction={
+                  <ListItem  key={`err-${idx}`} secondaryAction={
                     <Button size="small" onClick={() => { const nid = findNodeForMessage?.(e); if (nid) highlightNode?.(nid); }}>
                       Focus
                     </Button>
@@ -59,7 +59,7 @@ const ValidationDialog = ({ open, onClose, validationResult = { errors: [], warn
           </Box>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{borderTop: '1px solid #eee'}}>
         <Button onClick={onClose}>Close</Button>
       </DialogActions>
     </Dialog>

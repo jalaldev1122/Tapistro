@@ -64,8 +64,8 @@ const DecisionNode = ({ id, data }) => {
           onBlur={() => handleUpdate('noLabel', noLabel)}
         />
         <Handle  type="target" position={Position.Top} style={{ background: '#8e24aa' }} />
-        <Handle id={'no'} type="source" position={Position.Bottom} style={{ left: '60%', background: '#fff', border: '1px solid #8121d6' }} />
-        <Handle id={'yes'} type="source" position={Position.Bottom} style={{ left: '40%', background: '#fff', border: '1px solid #8121d6' }} />
+        <Handle id={'no'} type="source" position={Position.Bottom} style={{ left: '60%', background: '#fff', border: '1px solid #8e24aa' }} />
+        <Handle id={'yes'} type="source" position={Position.Bottom} style={{ left: '40%', background: '#fff', border: '1px solid #8e24aa' }} />
       </Box>
     </Paper>
   );

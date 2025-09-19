@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
  * HandleWithPlus
  * Props passed through to underlying Handle. Adds a centered plus overlay.
  */
-const HandleWithPlus = ({ id, type, position, style = {}, overlayOffset = -10, overlayColor = '#8121d6', ...rest }) => {
+const HandleWithPlus = ({ id, type, position, style = {}, overlayOffset = -10, overlayColor = '#8121d6', size = 12, ...rest }) => {
   const overlayBase = {
     position: 'absolute',
     left: '50%',
@@ -16,16 +16,28 @@ const HandleWithPlus = ({ id, type, position, style = {}, overlayOffset = -10, o
   };
 
   const posStr = position ? String(position).toLowerCase() : '';
-  const topOffsetBool = posStr.includes('top');
-  const bottomOffsetBool = posStr.includes('bottom');
+  const isTop = posStr.includes('top');
+  const isBottom = posStr.includes('bottom');
+  const isLeft = posStr.includes('left');
+  const isRight = posStr.includes('right');
 
-  // Ensure handle is above overlay and can receive pointer events
-  const handleStyle = { ...(style || {}), zIndex: 3 };
+  // Provide sensible default handle dimensions based on position
+  const defaultHandleStyle = isLeft || isRight
+    ? { width: size * 1.6, height: size * 1.6, borderRadius: '50%', background: '#fff', border: `1px solid ${overlayColor}` }
+    : { width: size * 1.6, height: size * 1.6, borderRadius: '50%', background: '#fff', border: `1px solid ${overlayColor}` };
 
-  const overlayPositionStyle = topOffsetBool
+  // Merge user provided style but keep zIndex high so it sits above overlay
+  const handleStyle = { ...defaultHandleStyle, ...(style || {}), zIndex: 3 };
+
+  // Overlay placement depends on position
+  const overlayPositionStyle = isTop
     ? { top: `${overlayOffset}px`, transform: 'translate(-50%, -50%)' }
-    : bottomOffsetBool
+    : isBottom
     ? { bottom: `${overlayOffset}px`, transform: 'translate(-50%, 50%)' }
+    : isLeft
+    ? { left: `${overlayOffset}px`, top: '50%', transform: 'translate(-50%, -50%)' }
+    : isRight
+    ? { right: `${overlayOffset}px`, top: '50%', transform: 'translate(50%, -50%)' }
     : { top: `${overlayOffset}px`, transform: 'translate(-50%, -50%)' };
 
   return (
@@ -33,8 +45,8 @@ const HandleWithPlus = ({ id, type, position, style = {}, overlayOffset = -10, o
       <Handle id={id} type={type} position={position} style={handleStyle} {...rest} />
 
       <Box sx={{ ...overlayBase, ...overlayPositionStyle }}>
-        <Box sx={{ bgcolor: '#fff', borderRadius: '50%', p: 0.25, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${overlayColor}` }}>
-          <AddIcon sx={{ fontSize: 14, color: overlayColor }} />
+        <Box sx={{ bgcolor: '#fff', borderRadius: '50%', width: size + 8, height: size + 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${overlayColor}` }}>
+          <AddIcon sx={{ fontSize: size, color: overlayColor }} />
         </Box>
       </Box>
     </Box>

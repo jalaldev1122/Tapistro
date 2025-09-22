@@ -1,12 +1,10 @@
 import React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
-import colors from '../colors';
+import colors from '../../theme/colors';
 
-
-const NodeItem = ({ type, children, selected = false, icon }) => {
+export const SidebarItem = ({ type, children, selected = false, icon }) => {
   return (
     <ListItemButton
       draggable
@@ -40,5 +38,3 @@ const NodeItem = ({ type, children, selected = false, icon }) => {
 
   );
 };
-
-export default NodeItem;

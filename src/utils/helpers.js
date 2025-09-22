@@ -1,4 +1,5 @@
-export function humanize(s) {
+
+export const humanize = (s) => {
   if (!s) return s;
   const words = s
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
@@ -8,7 +9,7 @@ export function humanize(s) {
   return words.join(' ');
 }
 
-export function findNodeForMessage(nodes = [], msg = '') {
+export const findNodeForMessage = (nodes = [], msg = '') => {
   if (!msg) return null;
   for (let n of nodes) {
     if (msg.includes(n.id)) return n.id;

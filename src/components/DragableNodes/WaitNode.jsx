@@ -5,16 +5,9 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { useDispatch } from 'react-redux';
-import { updateNode } from '../../store/slices/workflowSlice';
 
-const WaitNode = ({ id, data }) => {
+export const WaitNode = ({ data }) => {
   const [duration, setDuration] = useState(data?.duration || 60);
-
-  const dispatch = useDispatch();
-  const handleUpdate = (value) => {
-    dispatch(updateNode({ id, duration: value }));
-  };
 
   return (
     <Paper elevation={3} sx={{ minWidth: 250, color: '#fff', position: 'relative', borderRadius: '8px' }}>
@@ -63,5 +56,3 @@ const WaitNode = ({ id, data }) => {
     </Paper>
   );
 };
-
-export default WaitNode;

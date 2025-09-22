@@ -1,21 +1,30 @@
 import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
-import { humanize, findNodeForMessage as findNodeForMessageHelper } from '../utils/helpers';
+import { humanize, findNodeForMessage as findNodeForMessageHelper } from '../../utils/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { setNodes, setEdges, addNode, addEdge, updateNode, removeNode, removeEdge } from '../store/flowSlice';
+import { setNodes, setEdges, addNode, addEdge, removeNode } from '../../store/slices/workflowSlice';
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
-import useWorkflowValidator from './WorkflowValidator';
-import Sidebar from './Sidebar';
+import { useWorkflowValidator } from '../../utils/WorkflowValidator';
+import { Sidebar } from '../Sidebar/Sidebar';
 import FlowCanvas from './FlowCanvas';
-import ValidationDialog from './ValidationDialog';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import { ValidationDialog } from '../Dialog/ValidationDialog';
+import { labelMap as labelMape } from '../../constant/labelMap';
 
 
 let id = 1;
 const getId = () => `node_${id++}`;
 
-const FlowChart = () => {
+export const FlowChart = () => {
+  const [validationOpen, setValidationOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
+  const [open, setOpen] = useState(false);
+  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [labelInput, setLabelInput] = useState('');
+
+  const { validateWorkflow } = useWorkflowValidator();
   const dispatch = useDispatch();
+
   const nodes = useSelector((s) => s.flow.nodes);
   const edges = useSelector((s) => s.flow.edges);
 
@@ -29,7 +38,6 @@ const FlowChart = () => {
       const next = applyNodeChanges(changes, nodes || []);
       dispatch(setNodes(next));
     } else {
-      // assume full nodes array
       dispatch(setNodes(changes));
     }
   }, [dispatch, nodes]);
@@ -47,12 +55,6 @@ const FlowChart = () => {
       dispatch(setEdges(changes));
     }
   }, [dispatch, edges]);
-  const { validateWorkflow } = useWorkflowValidator();
-  const [validationOpen, setValidationOpen] = useState(false);
-  const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
-  const [open, setOpen] = useState(false);
-  const [selectedEdge, setSelectedEdge] = useState(null);
-  const [labelInput, setLabelInput] = useState('');
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -72,25 +74,13 @@ const FlowChart = () => {
       };
 
       const nodeId = getId();
-      const labelMap = {
-        emailNode: 'Email',
-        messageNode: 'Message',
-        waitNode: 'Delay',
-        decisionNode: 'Decision Split',
-        updateProfileNode: 'Update Profile',
-        actionPath: 'Action Path',
-        experimentPath: 'Experiment Path',
-        addVarient: 'Add Variant',
-        entryRules: 'Entry Rules',
-        customNode: 'Custom',
-      };
 
       const newNode = {
         id: nodeId,
         type,
         position,
         data: {
-          label: labelMap[type] || humanize(type) || `Node ${nodeId}`,
+          label: labelMape[type] || humanize(type) || `Node ${nodeId}`,
           ...(type === 'emailNode' && { emailTemplateId: '' }),
           ...(type === 'waitNode' && { duration: 1 }),
         },
@@ -128,7 +118,6 @@ const FlowChart = () => {
   }, []);
 
   const handleNodesDelete = useCallback((deleted) => {
-    const ids = new Set(deleted.map((d) => d.id));
     deleted.forEach((d) => dispatch(removeNode(d.id)));
   }, [dispatch]);
 
@@ -162,6 +151,7 @@ const FlowChart = () => {
         reactFlowRef.current.fitView({ padding: 0.2, includeNodes: [node] });
       }
     } catch (err) {
+      console.error('Error highlighting node:', err);
     }
   };
 
@@ -225,5 +215,3 @@ const FlowChart = () => {
     </Box>
   );
 };
-
-export default FlowChart;

@@ -4,7 +4,7 @@ import {
   getOrphanedNodes,
   traverseWorkflow,
   validateWorkflow,
-} from './workflowEngine';
+} from '../workflowEngine';
 
 describe('workflowEngine utilities', () => {
   test('getNextNodes returns correct targets', () => {

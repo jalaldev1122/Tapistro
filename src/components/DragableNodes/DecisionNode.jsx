@@ -8,7 +8,7 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import { useDispatch } from 'react-redux';
 import { updateNode } from '../../store/slices/workflowSlice';
 
-const DecisionNode = ({ id, data }) => {
+export const DecisionNode = ({ id, data }) => {
   const [label, setLabel] = useState(data?.label || 'Decision');
   const [yesLabel, setYesLabel] = useState(data?.yesLabel || 'Yes');
   const [noLabel, setNoLabel] = useState(data?.noLabel || 'No');
@@ -71,5 +71,3 @@ const DecisionNode = ({ id, data }) => {
     </Paper>
   );
 };
-
-export default DecisionNode;

@@ -3,19 +3,8 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import { useDispatch } from 'react-redux';
-import { updateNode } from '../../store/slices/workflowSlice';
 
-
-const AddVarient = ({ id, data }) => {
-    const [subject, setSubject] = useState(data?.subject || '');
-    const [body, setBody] = useState(data?.body || '');
-
-    const dispatch = useDispatch();
-    const handleUpdate = (field, value) => {
-        dispatch(updateNode({ id, [field]: value }));
-    };
-
+export const AddVarient = () => {
     return (
         <Paper elevation={3} sx={{ width: 150, color: '#fff', position: 'relative', borderRadius: '50px', p: '4px' }}>
             <Handle
@@ -45,5 +34,3 @@ const AddVarient = ({ id, data }) => {
         </Paper>
     );
 };
-
-export default AddVarient;

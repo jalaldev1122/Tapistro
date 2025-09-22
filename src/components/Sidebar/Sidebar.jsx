@@ -14,10 +14,10 @@ import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFill
 
 
 import List from '@mui/material/List';
-import NodeItem from './NodeItem';
-import colors from '../colors';
+import {SidebarItem} from './SidebarItem';
+import colors from '../../theme/colors';
 
-const Sidebar = ({ onValidate }) => {
+export const Sidebar = ({ onValidate }) => {
   return (
     <Box
       sx={{
@@ -33,51 +33,45 @@ const Sidebar = ({ onValidate }) => {
         <Typography gutterBottom sx={{ fontWeight: 700, color: colors.grey[800] }}>
           Components
         </Typography>
-        <Typography sx={{ mb: 1, fontSize: '13px', color:colors.grey[500], fontFamily: 'Inter, sans-serif' }}>
+        <Typography sx={{ mb: 1, fontSize: '13px', color: colors.grey[500], fontFamily: 'Inter, sans-serif' }}>
           Select steps to build out your journey.
         </Typography>
       </Box>
 
       <Box sx={{ p: 2 }}>
-        <Typography sx={{ fontWeight: 700, mb: 1, color:colors.grey[600], ml: 1 }}>Basic Components</Typography>
+        <Typography sx={{ fontWeight: 700, mb: 1, color: colors.grey[600], ml: 1 }}>Basic Components</Typography>
         <List>
-          <NodeItem type="emailNode" icon={<MailOutlineIcon />}>
+          <SidebarItem type="emailNode" icon={<MailOutlineIcon />}>
             Send Email
-          </NodeItem>
-          <NodeItem type="messageNode" icon={<SendIcon sx={{ rotate: '-30deg' }} />}>
+          </SidebarItem>
+          <SidebarItem type="messageNode" icon={<SendIcon sx={{ rotate: '-30deg' }} />}>
             Send Message
-          </NodeItem>
-
-          <NodeItem type="waitNode" icon={<AccessTimeFilledIcon />}>
+          </SidebarItem>
+          <SidebarItem type="waitNode" icon={<AccessTimeFilledIcon />}>
             Delay
-          </NodeItem>
-
-          <Typography sx={{ fontWeight: 700, mb: 1, color:colors.grey[600], ml: 1, mt: 3 }}>Flow Controls</Typography>
-          <NodeItem type="decisionNode" icon={<AccountTreeRoundedIcon />}>
+          </SidebarItem>
+          <Typography sx={{ fontWeight: 700, mb: 1, color: colors.grey[600], ml: 1, mt: 3 }}>Flow Controls</Typography>
+          <SidebarItem type="decisionNode" icon={<AccountTreeRoundedIcon />}>
             Decision Split
-          </NodeItem>
-
-          <NodeItem type="updateProfileNode" icon={<AccountBoxRoundedIcon />}>
+          </SidebarItem>
+          <SidebarItem type="updateProfileNode" icon={<AccountBoxRoundedIcon />}>
             Audience Paths
-          </NodeItem>
-
-          <NodeItem
+          </SidebarItem>
+          <SidebarItem
             type="actionPath"
             icon={<BoltOutlinedIcon sx={{ transform: 'rotate(5deg)', fontSize: 22, fontWeight: 700 }} />}
           >
             Action Paths
-          </NodeItem>
-
-          <NodeItem type="experimentPath" icon={<ScienceIcon />}>
+          </SidebarItem>
+          <SidebarItem type="experimentPath" icon={<ScienceIcon />}>
             Experiment Paths
-          </NodeItem>
-          <NodeItem type="addVarient" icon={<AddCircleRoundedIcon />}>
+          </SidebarItem>
+          <SidebarItem type="addVarient" icon={<AddCircleRoundedIcon />}>
             Add Varient
-          </NodeItem>
-
-    <NodeItem type="entryRules" icon={<PlayCircleFilledWhiteRoundedIcon />}>
-         Entry Rules
-          </NodeItem>
+          </SidebarItem>
+          <SidebarItem type="entryRules" icon={<PlayCircleFilledWhiteRoundedIcon />}>
+            Entry Rules
+          </SidebarItem>
 
         </List>
       </Box>
@@ -85,7 +79,6 @@ const Sidebar = ({ onValidate }) => {
         position: 'absolute',
         bottom: 16,
         left: 16,
-
       }}>
         <Button variant="contained" color="primary" style={{ backgroundColor: colors.primary.main }} fullWidth onClick={onValidate} >
           Validate Workflow
@@ -94,5 +87,3 @@ const Sidebar = ({ onValidate }) => {
     </Box>
   );
 };
-
-export default Sidebar;

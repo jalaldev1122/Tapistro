@@ -20,7 +20,9 @@
  * @param {Array} edges
  * @returns {{ adjacency: Map<string,string[]>, reverseAdj: Map<string,string[]> }}
  */
-function buildAdjacency(nodes = [], edges = []) {
+
+
+const buildAdjacency = (nodes = [], edges = []) => {
   const adjacency = new Map();
   const reverseAdj = new Map();
 
@@ -45,7 +47,7 @@ function buildAdjacency(nodes = [], edges = []) {
  * @param {Array} edges
  * @returns {string[]}
  */
-export function getNextNodes(nodeId, edges = []) {
+export const getNextNodes = (nodeId, edges = []) => {
   return edges.filter((e) => e.source === nodeId).map((e) => e.target);
 }
 
@@ -56,7 +58,7 @@ export function getNextNodes(nodeId, edges = []) {
  * @param {Array} edges
  * @returns {{ hasCycle: boolean, cycles: Array<string[]> }}
  */
-export function detectCircularDependencies(nodes = [], edges = []) {
+export const detectCircularDependencies = (nodes = [], edges = []) => {
   const { adjacency } = buildAdjacency(nodes, edges);
   const visited = new Set();
   const onStack = new Set();
@@ -96,7 +98,7 @@ export function detectCircularDependencies(nodes = [], edges = []) {
  * @param {Array} edges
  * @returns {Array} 
  */
-export function getOrphanedNodes(nodes = [], edges = []) {
+export const getOrphanedNodes=(nodes = [], edges = [])=> {
   const { adjacency, reverseAdj } = buildAdjacency(nodes, edges);
   return nodes.filter((n) => {
     const out = adjacency.get(n.id) || [];
@@ -118,7 +120,7 @@ export function getOrphanedNodes(nodes = [], edges = []) {
  * @param {Object} [opts]
  * @param {number} [opts.maxDepth] - optional safety cap to avoid huge graphs
  */
-export function traverseWorkflow(startNodeId, nodes = [], edges = [], opts = {}) {
+export const traverseWorkflow=(startNodeId, nodes = [], edges = [], opts = {})=> {
   const { adjacency } = buildAdjacency(nodes, edges);
   const maxDepth = opts.maxDepth || nodes.length + 10;
   const results = [];
@@ -161,7 +163,7 @@ export function traverseWorkflow(startNodeId, nodes = [], edges = [], opts = {})
  * @param {Array} edges
  * @returns {{ isValid: boolean, errors: string[], warnings: string[], orphaned: Array }}
  */
-export function validateWorkflow(nodes = [], edges = []) {
+export const validateWorkflow=(nodes = [], edges = [])=> {
   const errors = [];
   const warnings = [];
   const orphaned = getOrphanedNodes(nodes, edges);
@@ -234,7 +236,7 @@ export function validateWorkflow(nodes = [], edges = []) {
     }
   }
 
- 
+
   if (orphaned.length > 0) {
     warnings.push(`Orphaned nodes (no in/out): ${orphaned.map((n) => n.id).join(', ')}`);
   }
@@ -258,7 +260,7 @@ export function validateWorkflow(nodes = [], edges = []) {
  *
  * The executor returns a result object { success, paths: Array, errors: Array }
  */
-export async function executeWorkflow(startNodeId, nodes = [], edges = [], options = {}) {
+export  const executeWorkflow= async(startNodeId, nodes = [], edges = [], options = {})=> {
   const { adjacency } = buildAdjacency(nodes, edges);
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 

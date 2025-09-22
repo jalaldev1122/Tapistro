@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('./components/FlowChart', () => () => <div>learn react</div>);
+jest.mock('./components/Flow/FlowChart.jsx', () => () => <div>learn react</div>);
 
 import App from './App';
 

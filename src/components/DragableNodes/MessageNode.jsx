@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
-const MessageNode = ({ id, data }) => {
+export const MessageNode = () => {
     return (
         <Paper elevation={3} sx={{ width: 320, color: '#fff', position: 'relative', borderRadius: '8px' }}>
 
@@ -64,4 +64,3 @@ const MessageNode = ({ id, data }) => {
     );
 };
 
-export default MessageNode;

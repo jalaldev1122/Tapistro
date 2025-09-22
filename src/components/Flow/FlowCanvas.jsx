@@ -6,15 +6,14 @@ import {
   Controls,
   MiniMap,
 } from '@xyflow/react';
-import EmailNode from './nodes/EmailNode';
-import WaitNode from './nodes/WaitNode';
-import DecisionNode from './nodes/DecisionNode';
-import UpdateProfileNode from './nodes/UpdateProfileNode';
-import MessageNode from './nodes/MessageNode';
-import AddVarient from './nodes/AddVarient';
-import EntryRules from './nodes/EntryRules';
-import CustomNode from './nodes/CustomNode';
-import colors from '../colors';
+import { EmailNode } from '../DragableNodes/EmailNode';
+import { WaitNode } from '../DragableNodes/WaitNode';
+import { DecisionNode } from '../DragableNodes/DecisionNode';
+import { UpdateProfileNode } from '../DragableNodes/UpdateProfileNode';
+import { MessageNode } from '../DragableNodes/MessageNode';
+import { AddVarient } from '../DragableNodes/AddVarient';
+import { EntryRules } from '../DragableNodes/EntryRules';
+import colors from '../../theme/colors';
 
 const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onDragOver, onNodeClick, onNodesDelete, onEdgeDoubleClick, onInit }) => {
   const safeNodes = Array.isArray(nodes) ? nodes : (console.warn('[FlowCanvas] nodes is not an array, falling back to []'), []);
@@ -23,7 +22,7 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
   return (
     <Box sx={{ flex: 1, height: '100vh' }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow
-      autoPanOnNodeFocus
+        autoPanOnNodeFocus
         nodes={safeNodes}
         edges={safeEdges}
         onNodesChange={onNodesChange}
@@ -35,14 +34,13 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
         deleteKeyCode={['Backspace', 'Delete']}
         onInit={onInit}
         nodeTypes={{
-          customNode: CustomNode,
           emailNode: EmailNode,
           waitNode: WaitNode,
           decisionNode: DecisionNode,
           updateProfileNode: UpdateProfileNode,
           messageNode: MessageNode,
           addVarient: AddVarient,
-          entryRules:EntryRules
+          entryRules: EntryRules
         }}
         fitView
         style={{ width: '100%', height: '100%' }}
@@ -54,8 +52,8 @@ const FlowCanvas = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onD
           },
           animated: false,
           focusable: true,
-          labelBgStyle: { fill: colors.grey[100], fillOpacity: 0.95,border:'1px solid red' },
-          labelStyle: { fontWeight: 600, fontSize: 14, color:'red' },
+          labelBgStyle: { fill: colors.grey[100], fillOpacity: 0.95, border: '1px solid red' },
+          labelStyle: { fontWeight: 600, fontSize: 14, color: 'red' },
         }}
         elementsSelectable
       >

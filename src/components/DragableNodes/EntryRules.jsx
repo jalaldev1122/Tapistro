@@ -1,20 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { Handle, Position } from '@xyflow/react';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { Typography } from '@mui/material';
 
-
-const EntryRules = ({ id, data }) => {
-    const [subject, setSubject] = useState(data?.subject || '');
-    const [body, setBody] = useState(data?.body || '');
-
-    const handleUpdate = (field, value) => {
-        if (data?.updateNode) {
-            data.updateNode(id, { [field]: value });
-        }
-    };
+export const EntryRules = () => {
 
     return (
         <Box sx={{ position: 'relative', overflow: 'visible', width: 250 }}>
@@ -61,5 +52,3 @@ const EntryRules = ({ id, data }) => {
         </Box>
     );
 };
-
-export default EntryRules;

@@ -1,4 +1,5 @@
-import { validateWorkflow } from './WorkflowValidator';
+import { validateWorkflow } from "../WorkflowValidator";
+
 
 describe('validateWorkflow', () => {
   test('detects cycle', () => {

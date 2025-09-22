@@ -12,9 +12,8 @@ const initialState = {
   lastChangeAt: null,
   savedAt: null,
 };
-
-const flowSlice = createSlice({
-  name: 'flow',
+const workflowSlice = createSlice({
+  name: 'workflowSlice',
   initialState,
   reducers: {
     setFlow(state, action) {
@@ -86,6 +85,6 @@ export const {
   updateEdge,
   removeEdge,
   selectNode,
-} = flowSlice.actions;
+} = workflowSlice.actions;
 
-export default flowSlice.reducer;
+export default workflowSlice.reducer;

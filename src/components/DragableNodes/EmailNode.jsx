@@ -8,7 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useDispatch } from 'react-redux';
 import { updateNode } from '../../store/slices/workflowSlice';
 
-const EmailNode = ({ id, data }) => {
+export const EmailNode = ({ id, data }) => {
   const [subject, setSubject] = useState(data?.subject || '');
   const [body, setBody] = useState(data?.body || '');
   const [templateId, setTemplateId] = useState(data?.emailTemplateId || '');
@@ -84,5 +84,3 @@ const EmailNode = ({ id, data }) => {
     </Paper>
   );
 };
-
-export default EmailNode;

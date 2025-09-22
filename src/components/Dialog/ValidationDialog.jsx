@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Box from '@mui/material/Box';
 
-const ValidationDialog = ({ open, onClose, validationResult = { errors: [], warnings: [] }, findNodeForMessage, highlightNode }) => {
+export const ValidationDialog = ({ open, onClose, validationResult = { errors: [], warnings: [] }, findNodeForMessage, highlightNode }) => {
   const hasErrors = validationResult.errors && validationResult.errors.length > 0;
   const hasWarnings = validationResult.warnings && validationResult.warnings.length > 0;
 
@@ -65,5 +65,3 @@ const ValidationDialog = ({ open, onClose, validationResult = { errors: [], warn
     </Dialog>
   );
 };
-
-export default ValidationDialog;

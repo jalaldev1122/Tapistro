@@ -1,5 +1,3 @@
-// colors.js
-
 const colors = {
     primary: {
         main: '#7d22d8',

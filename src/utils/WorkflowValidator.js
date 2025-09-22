@@ -1,12 +1,10 @@
 
 import { useCallback } from 'react';
 
-
-export function validateWorkflow(nodes = [], edges = []) {
+export const validateWorkflow=(nodes = [], edges = [])=> {
   const errors = [];
   const warnings = [];
 
-  const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const adjacencyList = new Map();
 
   nodes.forEach((node) => {
@@ -93,9 +91,8 @@ export function validateWorkflow(nodes = [], edges = []) {
   };
 }
 
-const useWorkflowValidator = () => {
+export const useWorkflowValidator = () => {
   const wrapped = useCallback((nodes, edges) => validateWorkflow(nodes, edges), []);
   return { validateWorkflow: wrapped };
 };
 
-export default useWorkflowValidator;

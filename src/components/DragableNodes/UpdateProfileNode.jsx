@@ -8,7 +8,7 @@ import PersonIcon from '@mui/icons-material/Person';
 const statuses = ['Active', 'Inactive', 'Pending'];
 const subscriptions = ['Free', 'Premium', 'Enterprise'];
 
-const UpdateProfileNode = ({ id, data }) => {
+export const UpdateProfileNode = ({ id, data }) => {
   const profile = data?.profile || {};
   const [form, setForm] = useState({
     name: profile.name || '',
@@ -133,5 +133,3 @@ const UpdateProfileNode = ({ id, data }) => {
     </Paper>
   );
 };
-
-export default UpdateProfileNode;

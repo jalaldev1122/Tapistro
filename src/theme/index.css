@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #111827;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+  font-size: 16px;
+}
+
+
+.flow-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar {
+  width: 200px;
+  background: #f9f9f9;
+  padding: 16px;
+  border-right: 1px solid #ddd;
+}
+
+.dnd-node {
+  background: white;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: grab;
+  text-align: center;
+}
+
+.validate-btn {
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.flow-chart {
+  flex: 1;
+  height: 100%;
+}
+
+
+.react-flow__handle {
+  background: #fff !important;
+  border: 2px solid #8121d6 !important;
+  outline: 4px solid rgba(129, 33, 214, 0.1) !important;
+  border-radius: 50px !important;
+  width: 16px !important;
+  height: 16px !important;
+  position: absolute;
+}
+
+.react-flow__handle::after {
+  content: '+';
+  color: #d6c9f0;
+  font-size: 16px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+
+.react-flow__edge.selected path {
+  stroke: #4c0099 !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 4px rgba(119, 79, 231, 0.5));
+}

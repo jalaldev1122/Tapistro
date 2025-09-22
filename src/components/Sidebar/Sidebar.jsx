@@ -17,7 +17,7 @@ import List from '@mui/material/List';
 import {SidebarItem} from './SidebarItem';
 import colors from '../../theme/colors';
 
-export const Sidebar = ({ onValidate }) => {
+export const Sidebar = () => {
   return (
     <Box
       sx={{
@@ -74,15 +74,6 @@ export const Sidebar = ({ onValidate }) => {
           </SidebarItem>
 
         </List>
-      </Box>
-      <Box sx={{
-        position: 'absolute',
-        bottom: 16,
-        left: 16,
-      }}>
-        <Button variant="contained" color="primary" style={{ backgroundColor: colors.primary.main }} fullWidth onClick={onValidate} >
-          Validate Workflow
-        </Button>
       </Box>
     </Box>
   );

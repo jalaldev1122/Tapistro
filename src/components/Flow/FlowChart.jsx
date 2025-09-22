@@ -2,14 +2,16 @@ import React, { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import { humanize, findNodeForMessage as findNodeForMessageHelper } from '../../utils/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { setNodes, setEdges, addNode, addEdge, removeNode } from '../../store/slices/workflowSlice';
+import { setNodes, setEdges, addNode, addEdge, removeNode, saveFlow } from '../../store/slices/workflowSlice';
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { useWorkflowValidator } from '../../utils/WorkflowValidator';
 import { Sidebar } from '../Sidebar/Sidebar';
 import FlowCanvas from './FlowCanvas';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import { ValidationDialog } from '../Dialog/ValidationDialog';
 import { labelMap as labelMape } from '../../constant/labelMap';
+import { EdgeLabelDialog } from '../Dialog/EdgeLabelDialog';
+import { Button } from '@mui/material';
+import { Topbar } from '../topbar';
 
 
 let id = 1;
@@ -18,7 +20,7 @@ const getId = () => `node_${id++}`;
 export const FlowChart = () => {
   const [validationOpen, setValidationOpen] = useState(false);
   const [validationResult, setValidationResult] = useState({ errors: [], warnings: [] });
-  const [open, setOpen] = useState(false);
+  const [showEdgeModal, setShowEdgeModal] = useState(false);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [labelInput, setLabelInput] = useState('');
 
@@ -114,7 +116,7 @@ export const FlowChart = () => {
     const current = edge.label || edge.data?.condition || '';
     setSelectedEdge(edge);
     setLabelInput(current);
-    setOpen(true);
+    setShowEdgeModal(true);
   }, []);
 
   const handleNodesDelete = useCallback((deleted) => {
@@ -156,7 +158,7 @@ export const FlowChart = () => {
   };
 
   const handleCancel = () => {
-    setOpen(false);
+    setShowEdgeModal(false);
     setSelectedEdge(null);
     setLabelInput('');
   };
@@ -169,13 +171,21 @@ export const FlowChart = () => {
           : e
       )));
     }
-    setOpen(false);
+    setShowEdgeModal(false);
     setSelectedEdge(null);
     setLabelInput('');
   };
+
+  const onSave = () => {
+    const flow = { nodes, edges };
+    dispatch(saveFlow(flow));
+    alert('Flow saved to localStorage');
+  };
+
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
-      <Sidebar onValidate={handleValidate} />
+      <Sidebar />
+      <Topbar onValidate={handleValidate} onSave={onSave} />
       <FlowCanvas
         nodes={nodes}
         edges={edges}
@@ -195,23 +205,13 @@ export const FlowChart = () => {
         findNodeForMessage={(msg) => findNodeForMessageHelper(nodes, msg)}
         highlightNode={highlightNode}
       />
-      <Dialog open={open} onClose={handleCancel}>
-        <DialogTitle>Label</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            fullWidth
-            variant="outlined"
-            value={labelInput}
-            onChange={(e) => setLabelInput(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleSave} variant="contained">Save</Button>
-        </DialogActions>
-      </Dialog>
+      <EdgeLabelDialog
+        open={showEdgeModal}
+        label={labelInput}
+        onCancel={handleCancel}
+        onSave={handleSave}
+        onLabelChange={setLabelInput}
+      />
     </Box>
   );
 };

@@ -1,69 +1,104 @@
-# React + TypeScript + Vite
+# workflow-editor - Visual Workflow Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Overview](#overview)  
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Prerequisites](#prerequisites)  
+- [Installation](#installation)  
+- [Running Locally (Development)](#running-locally-development)  
+- [Building for Production](#building-for-production)  
+- [Testing](#testing)  
+- [Project Structure](#project-structure)  
+- [Usage](#usage)  
+- [Saving & Loading Flows](#saving--loading-flows)  
+- [Notifications](#notifications)  
+- [Environment Variables](#environment-variables)  
+- [Deployment](#deployment)  
+- [Contributing](#contributing)  
+- [Known Issues](#known-issues)  
+- [License](#license)  
+- [Contact](#contact)  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Overview
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**workflow-editor** is an intuitive visual workflow builder built with React, Redux Toolkit, Material UI, and Xyflow. It allows users to drag-and-drop workflow components, create complex workflows with conditional branching, and validate them in real time.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Features
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Drag-and-drop workflow nodes  
+- Connect nodes with edges including condition labels  
+- Real-time validation with errors and warnings  
+- Persistent flow saving/loading via localStorage  
+- Material UI components with responsive design  
+- Undo/redo and node highlighting on validation  
+- Modular Redux state management  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Tech Stack
+
+- React 19  
+- Redux Toolkit  
+- Material UI 7  
+- Xyflow React 12  
+- Vite 7  
+- Jest & React Testing Library  
+- TypeScript (optional)  
+
+---
+
+## Prerequisites
+
+- Node.js v16 or higher  
+- npm v8+ or yarn v3+  
+
+---
+
+## Installation
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/yourusername/my-app.git
+cd my-app
+npm install
+# or
+yarn install
+
+Running the App
+npm run dev
+# or
+yarn dev
+
+Building for Production
+npm run build
+# or
+yarn build
+
+
+Running Tests
+npm test
+# or
+yarn test
+
+
+Technologies Used
+React 19
+Redux Toolkit
+React-Redux
+Vite (build tool)
+Material-UI (MUI) v7
+XState (statecharts)
+Jest (testing)
+@xyflow/react (flowchart library)
+
+Local Storage
+Flows are saved and loaded from browser localStorage under key savedFlow for persistence across sessions.

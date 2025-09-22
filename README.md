@@ -12,17 +12,6 @@
 - [Running Locally (Development)](#running-locally-development)  
 - [Building for Production](#building-for-production)  
 - [Testing](#testing)  
-- [Project Structure](#project-structure)  
-- [Usage](#usage)  
-- [Saving & Loading Flows](#saving--loading-flows)  
-- [Notifications](#notifications)  
-- [Environment Variables](#environment-variables)  
-- [Deployment](#deployment)  
-- [Contributing](#contributing)  
-- [Known Issues](#known-issues)  
-- [License](#license)  
-- [Contact](#contact)  
-
 ---
 
 ## Overview
